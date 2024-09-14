@@ -1,5 +1,8 @@
 <!doctype html>
 
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}">
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -10,12 +13,14 @@
 
     <body>
         <nav class="header">
-            <a href="/">ATLFoodFinder</a>
-            <a href="/">Log In</a>
-            <a href="/">Sign Up</a>
-            <a href="/">Contact</a>
+            <a href="/" class="header-button" id="main-button">ATLFoodFinder</a>
+            <div id="side-buttons">
+                <a href="/login" class="header-button">Log In</a>
+                <a href="/sign_up" class="header-button">Sign Up</a>
+                <a href="/contact" class="header-button">Contact</a>
+            </div>
         </nav>
-        <div>
+        <div id="title">
             {% block content %}
             {% endblock %}
         </div>
