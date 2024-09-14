@@ -1,0 +1,108 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/*
+Uncomment the background-image properties in the class below to add a background image.
+*/
+body {
+    flex-direction: column;
+    /*background-image: url("https://www.usatoday.com/gcdn/-mm-/11d1f5a0f30c78e5e42da1f24d951e3266ecd59c/c=0-61-2032-1208/local/-/media/USATODAY/USATODAY/2013/11/23//1385183471001-2-lemeurice-DorchesterCollection.jpg?width=2032&height=1147&fit=crop&format=pjpg&auto=webp");*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+}
+
+/*
+This is the class that controls the styling of the head navigation bar on all the pages.
+Have it as a class in case we want to have some of the navigation bars differ based on the screen we're on.
+*/
+.header {
+    flex-direction: row;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /*padding-left: 5%;*/
+    /*padding-right: 5%;*/
+    display: flex;
+    width: 100%;
+    background-color: white;
+    align-items: center;
+    border-bottom: black;
+    border-bottom-width: thin;
+    border-bottom-style: solid;
+    margin-bottom: 32vh;
+}
+
+/*
+This is the class that controls the styling of the head navigation buttons, such as ATLFoodFinder, Sign Up, Login, etc.
+*/
+.header-button {
+    color: black;
+    text-decoration: none;
+    margin-right: 5%;
+    font-weight: 1000;
+    font-size: large;
+}
+
+/*
+This controls the styling for when a user hovers over the head navigation buttons touched on in the previous class.
+*/
+.header-button:hover {
+    color: gray;
+    transition: color 0.5s;
+}
+
+/*
+Should probably rename this. This styles the big words seen on every screen. The first instance of this you see is "Find Food Near You"
+*/
+#title {
+    font-size: xxx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background-color: purple;*/
+    flex: 1;
+    /*margin: auto;*/
+    /*position: relative;*/
+    text-align: center;
+    flex-direction: column;
+}
+
+/*
+This styles the "ATLFoodFinder" button in the head navigation bar on every screen.
+*/
+#main-button {
+    font-size: x-large;
+    margin-left: 2%;
+}
+
+/*
+This is the div containing all the head navigation bar buttons, excluding the "ATLFoodFinder button".
+Using it to align them to the left of the screen.
+*/
+#side-buttons {
+    justify-self: flex-end;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/*
+Styles the "Get Started" button only found on the front page in the index.html file.
+*/
+#map-button {
+    font-size: x-large;
+    padding: 15px;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 15px;
+}
+
+/*
+Styles the "Get Started" button when hovered over by a user only found on the front page in the index.html file.
+*/
+#map-button:hover {
+    background-color: black;
+    color: white;
+    transition: background-color 0.5s, color 0.5s;
+}
