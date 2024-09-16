@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Trivially tweaked the head navigation bar">
+      <change afterPath="$PROJECT_DIR$/accounts/migrations/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +134,7 @@
       <workItem from="1726514487862" duration="7000" />
       <workItem from="1726515422273" duration="293000" />
       <workItem from="1726516238355" duration="1000" />
-      <workItem from="1726516353308" duration="2223000" />
+      <workItem from="1726516353308" duration="2712000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
