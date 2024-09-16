@@ -1,3 +1,4 @@
+
 """
 URL configuration for ATLFoodFinder project.
 
@@ -15,7 +16,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from core.views import index, map, login, sign_up, contact
 
@@ -26,4 +27,6 @@ urlpatterns = [
     path('sign_up/', sign_up, name='sign_up'),
     path('contact/', contact, name='contact'),
     path('admin/', admin.site.urls),
+
+    path('accounts/', include('accounts.urls')),
 ]
