@@ -3,6 +3,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 def login_user(request):
-    return render(request, 'authentication/login.html', {})
+    if request.method == 'POST':
+        username=request.POST['username']
+        password=request.POST['password']
+        user=authenticate(username=username,password=password)
+        if user is not None:
+            login(request, user) #Redirect to success page
+            return redirect('base')
+        else:
+            messages.success(request, 'Invalid username or password')
+            return redirect('login')
+    else:
+        return render(request, 'authentication/login.html', {})
 
 # Create your views here.
