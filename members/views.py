@@ -11,9 +11,9 @@ def login_user(request):
             login(request, user) #Redirect to success page
             return redirect('base')
         else:
-            messages.success(request, 'Invalid username or password')
+            messages.error(request, 'Invalid username or password')
             return redirect('login')
     else:
-        return render(request, 'authentication/login.html', {})
+        return render(request, 'core/login.html', {})
 
 # Create your views here.

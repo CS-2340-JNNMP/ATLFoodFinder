@@ -16,17 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.contrib.auth import views as auth_views
+from django import views
 from core.views import index, map, login, sign_up, contact
 
 urlpatterns = [
     path('', index, name='index'),
     path('map/',map, name='map'),
-    path('login/', login, name='login'),
+
+    #path('login/', name='login'),
     path('sign_up/', sign_up, name='sign_up'),
     path('contact/', contact, name='contact'),
     path('admin/', admin.site.urls),
-    path('members/', include('members.urls')), #Front end for users
-    path('members/', include('django.contrib.auth.urls')) #back end auth
+    path('', include('core.urls')),
+     #Front end for users
+    path('', include('django.contrib.auth.urls')), #back end auth
 
 ]

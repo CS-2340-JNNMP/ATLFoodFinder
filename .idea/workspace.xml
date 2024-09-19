@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Trivially tweaked the head navigation bar">
+      <change afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/core/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/members/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/members/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,6 +145,7 @@
       <workItem from="1726605077370" duration="203000" />
       <workItem from="1726605299948" duration="972000" />
       <workItem from="1726670031981" duration="1640000" />
+      <workItem from="1726704585167" duration="4246000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
