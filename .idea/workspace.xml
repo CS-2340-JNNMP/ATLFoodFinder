@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Implemented Google API">
-      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Fixed Google Maps Embed styling">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/map.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,18 +24,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "JevonTwitty"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JevonTwitty&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/CS-2340-JNNMP/ATLFoodFinder1.git",
-    "accountId": "a276badf-abee-4700-9b78-74941627c6b8"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder1.git&quot;,
+    &quot;accountId&quot;: &quot;a276badf-abee-4700-9b78-74941627c6b8&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -102,6 +103,7 @@
       <updated>1726304890788</updated>
       <workItem from="1726304904711" duration="9473000" />
       <workItem from="1726689635276" duration="185000" />
+      <workItem from="1726689824896" duration="3229000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
@@ -127,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1726306803418</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implemented Google API">
+      <option name="closed" value="true" />
+      <created>1726689850268</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1726689850268</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed Google Maps Embed styling">
+      <option name="closed" value="true" />
+      <created>1726706404187</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726706404187</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +167,8 @@
     <MESSAGE value="Created Front and map page.&#10;Created the beginnings of the base template we'll be using for every head, which is essentially just the head navigation bar." />
     <MESSAGE value="Trivially tweaked the head navigation bar" />
     <MESSAGE value="Added several core pages we'll be needing for this project, as well as some basic styling. Will leave the rest of that up to the front-end team." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added several core pages we'll be needing for this project, as well as some basic styling. Will leave the rest of that up to the front-end team." />
+    <MESSAGE value="Implemented Google API" />
+    <MESSAGE value="Fixed Google Maps Embed styling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Google Maps Embed styling" />
   </component>
 </project>
