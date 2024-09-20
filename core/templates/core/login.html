@@ -5,11 +5,26 @@
 {#{% block content %}#}
 {#    <h1 style="margin-bottom: 25px">Login</h1>#}
 {#{% endblock %}#}
+
+
+
 {% extends 'core/base.html' %}
+{% load static %}
+
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
+    <style>
+#loginBackground {
+    background-image: url("{% static 'core/login.png' %}");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+}
+</style>
+    <div id="loginBackground">
 <h1 style="margin-bottom: 25px">Login</h1>
     <div class="container">
             {% if messages %}
@@ -30,5 +45,6 @@
     </div>
     <input type="submit" value="Submit" class="btn btn-secondary">
 </form>
+    </div>
 
 {% endblock %}

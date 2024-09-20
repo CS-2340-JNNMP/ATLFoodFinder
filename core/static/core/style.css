@@ -1,3 +1,6 @@
+
+
+
 * {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -105,4 +108,12 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     background-color: black;
     color: white;
     transition: background-color 0.5s, color 0.5s;
+}
+
+#loginBackground {
+     background-image: url("/static/core/login.png");
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Make sure it covers the full height */
+    margin: 0;
 }
