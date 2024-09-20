@@ -6,7 +6,7 @@
 {#    <h1 style="margin-bottom: 25px">Login</h1>#}
 {#{% endblock %}#}
 
-
+{#https://www.youtube.com/watch?v=CTrVDi3tt8o#}
 
 {% extends 'core/base.html' %}
 {% load static %}
@@ -16,15 +16,68 @@
 
 {% block content %}
     <style>
-#loginBackground {
-    background-image: url("{% static 'core/login.png' %}");
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    margin: 0;
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #loginBackground {
+            background-image: url("{% static 'core/login.png' %}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex; /* Enable flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+
+        }
+        #loginBackground::before {
+    content: '';
+    position: absolute;
+    top: 30;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust this for transparency level */
+    z-index: 1; /* Keep the overlay behind the content */
 }
-</style>
+
+        .header {
+            flex-direction: row;
+            padding: 20px 0;
+            display: flex;
+            width: 100%;
+            background-color: white;
+            align-items: center;
+            border-bottom: thin solid black;
+            margin-bottom: 0; /* Ensure no extra space */
+        }
+
+        h1 {
+            color: #606c38;
+        }
+
+        #whiteForm {
+            width: 400px;
+            height: 400px;
+            background-color: white;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically inside the form */
+            align-items: center;
+            justify-content: center;
+            padding: 20px; /* Optional: Add padding inside the form */
+            border-radius: 25px;
+            z-index: 2;
+        }
+    </style>
+
+
     <div id="loginBackground">
+    <div id="whiteForm">
 <h1 style="margin-bottom: 25px">Login</h1>
     <div class="container">
             {% if messages %}
@@ -45,6 +98,7 @@
     </div>
     <input type="submit" value="Submit" class="btn btn-secondary">
 </form>
+    </div>
     </div>
 
 {% endblock %}

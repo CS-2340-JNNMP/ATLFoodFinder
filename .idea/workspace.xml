@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Trivially tweaked the head navigation bar">
-      <change afterPath="$PROJECT_DIR$/core/static/core/login.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/static/core/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/core/static/core/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/core/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/login.html" afterDir="false" />
     </list>
@@ -148,6 +146,7 @@
       <workItem from="1726670031981" duration="1640000" />
       <workItem from="1726704585167" duration="4246000" />
       <workItem from="1726798505530" duration="1235000" />
+      <workItem from="1726856024827" duration="2074000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
