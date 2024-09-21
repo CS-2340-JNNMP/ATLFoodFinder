@@ -32,4 +32,5 @@ urlpatterns = [
      #Front end for users
     path('', include('django.contrib.auth.urls')), #back end auth
 
+
 ]
