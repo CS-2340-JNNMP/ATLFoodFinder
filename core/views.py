@@ -27,7 +27,21 @@ def login_user(request):
         return render(request, 'core/login.html', {})
 
 def register_user(request):
-    return render(request, 'core/register_user.html', {})
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, 'Registration successful!')
+            return redirect('index')
+        else:
+            form=UserCreationForm()
+    else:
+        form = UserCreationForm()
+    return render(request, 'core/register_user.html', {'form' : form})
 def sign_up(request):
     return render(request, "core/sign_up.html")
 
