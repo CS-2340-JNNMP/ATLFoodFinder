@@ -12,6 +12,7 @@
     </head>
 
     <body>
+
         <nav class="header">
             <a href="/" class="header-button" id="main-button">ATLFoodFinder</a>
             <div id="side-buttons">
@@ -20,9 +21,16 @@
                 <a href="/contact" class="header-button">Contact</a>
             </div>
         </nav>
+
         <div id="title">
             {% block content %}
             {% endblock %}
         </div>
+
+        <footer>
+            <div style="justify-content: center; display: flex; flex: 1">
+                <p>Footer</p>
+            </div>
+        </footer>
     </body>
 </html>
