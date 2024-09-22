@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 50px;">
+        <!-- Default Profile Picture -->
+        <img src="{% static 'core/defaultPFP.png' %}" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #ccc;">
+
+        <!-- Display the username -->
+        <h2 style="margin-top: 20px;">{{ user.username }}</h2>
+    </div>
+{% endblock %}

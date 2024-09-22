@@ -18,7 +18,8 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)  # Redirect to success page
-            return redirect('index')
+            return redirect('profile')
+
 
         else:
             messages.error(request, 'Invalid username or password')
@@ -36,7 +37,8 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, 'Registration successful!')
-            return redirect('index')
+            return redirect('profile')
+
         else:
             form=UserCreationForm()
     else:
@@ -44,6 +46,11 @@ def register_user(request):
     return render(request, 'core/register_user.html', {'form' : form})
 def sign_up(request):
     return render(request, "core/sign_up.html")
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile(request):
+    return render(request, 'core/profile.html', {'user': request.user})
 
 def contact(request):
     return render(request, "core/contact.html")
