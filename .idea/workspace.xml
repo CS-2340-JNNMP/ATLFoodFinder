@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Trivially tweaked the head navigation bar">
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Fixed Google Maps Embed styling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/core/register_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/register_user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/core/templates/core/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/map.html" afterDir="false" />
+
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Implemented Google API">
+      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +35,15 @@
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
     &quot;assignee&quot;: &quot;NityaPotti&quot;
+    &quot;assignee&quot;: &quot;JevonTwitty&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder.git&quot;,
     &quot;accountId&quot;: &quot;3612c7a0-7947-484d-b6a3-63e0eb615d22&quot;
+    &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder1.git&quot;,
+    &quot;accountId&quot;: &quot;a276badf-abee-4700-9b78-74941627c6b8&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -59,6 +68,19 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
     "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }]]></component>
   <component name="RecentsManager">
@@ -134,6 +156,8 @@
       <option name="presentableId" value="Default" />
       <updated>1726304890788</updated>
       <workItem from="1726304904711" duration="9473000" />
+      <workItem from="1726689635276" duration="185000" />
+      <workItem from="1726689824896" duration="3229000" />
       <workItem from="1726514351732" duration="12000" />
       <workItem from="1726514365991" duration="47000" />
       <workItem from="1726514478218" duration="1000" />
@@ -173,16 +197,46 @@
       <option name="project" value="LOCAL" />
       <updated>1726306803418</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implemented Google API">
+      <option name="closed" value="true" />
+      <created>1726689850268</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1726689850268</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed Google Maps Embed styling">
+      <option name="closed" value="true" />
+      <created>1726706404187</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726706404187</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Created Django Project" />
     <MESSAGE value="Created Front and map page.&#10;Created the beginnings of the base template we'll be using for every head, which is essentially just the head navigation bar." />
     <MESSAGE value="Trivially tweaked the head navigation bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trivially tweaked the head navigation bar" />
+    <MESSAGE value="Added several core pages we'll be needing for this project, as well as some basic styling. Will leave the rest of that up to the front-end team." />
+    <MESSAGE value="Implemented Google API" />
+    <MESSAGE value="Fixed Google Maps Embed styling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Google Maps Embed styling" />
   </component>
 </project>
