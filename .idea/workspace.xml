@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Some front-end tweaks" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +80,7 @@
       <workItem from="1726463195074" duration="1958000" />
       <workItem from="1726466240549" duration="5603000" />
       <workItem from="1726687974972" duration="5209000" />
-      <workItem from="1727069244830" duration="4185000" />
+      <workItem from="1727069244830" duration="4536000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
@@ -105,7 +106,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726306803418</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Some front-end tweaks">
+      <option name="closed" value="true" />
+      <created>1727074460544</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727074460544</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,6 +124,7 @@
     <MESSAGE value="Created Django Project" />
     <MESSAGE value="Created Front and map page.&#10;Created the beginnings of the base template we'll be using for every head, which is essentially just the head navigation bar." />
     <MESSAGE value="Trivially tweaked the head navigation bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trivially tweaked the head navigation bar" />
+    <MESSAGE value="Some front-end tweaks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some front-end tweaks" />
   </component>
 </project>
