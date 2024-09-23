@@ -3,7 +3,16 @@
 {% block title %}Map{% endblock %}
 
 {% block content %}
-    <!-- Rating and Distance Inputs -->
+
+
+
+    <!-- This is the search bar -->
+    <div style="margin-bottom: 10px;">
+        <input type="text" id="search-bar" placeholder="Search for a restaurant"
+               style="padding: 10px; width: 300px; font-size: 14px;">
+        <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
+    </div>
+    <!-- This is the filter bar -->
     <div style="margin-bottom: 10px;">
         <label for="radiusInput">Radius (miles):</label>
         <input type="number" id="radiusInput" value="5">
@@ -12,73 +21,66 @@
         <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
     </div>
 
-    <!-- Search bar and button -->
-    <div style="margin-bottom: 10px;">
-        <input type="text" id="search-bar" placeholder="Search for a restaurant"
-               style="padding: 10px; width: 300px; font-size: 14px;">
-        <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
-    </div>
-
-    <!-- Map display -->
+    <!-- This is the map -->
     <div id="map" style="height: 500px; width: 100%;"></div>
 
     <script>
         let map;
         let service;
         let markers = [];
-
+        // we are initializing the map
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
 
-            // Initialize the map centered at the user location
+
             map = new google.maps.Map(document.getElementById('map'), {
                 center: userLocation,
                 zoom: 13
             });
 
-            // Initialize Places service
+            // we are initializing places
             service = new google.maps.places.PlacesService(map);
 
-            // Handle search button click
+            // this is the onclick for search
             document.getElementById('search-button').addEventListener('click', function() {
                 const query = document.getElementById('search-bar').value;
-                searchPlaces(query);
+                searchPlaces(query); // there is a function for this later
             });
 
-            // Handle filter button click
+            //this is the onclick for filter
             document.getElementById('filterButton').addEventListener('click', function() {
                 const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;  // Convert miles to meters
                 const minRating = parseFloat(document.getElementById('ratingInput').value);
-                searchNearby(userLocation, radius, minRating);
+                searchNearby(userLocation, radius, minRating); // there is a function for this later
             });
         }
-
+        //for search button
         function searchPlaces(query) {
             const request = {
-                query: query,  // Search term from input
-                fields: ['name', 'geometry'], // Fetch the name and location
+                query: query,
+                fields: ['name', 'geometry'],
             };
 
-            // Perform a text search
+
             service.findPlaceFromQuery(request, function(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     const place = results[0];  // Get the first result
                     if (place.geometry && place.geometry.location) {
-                        // Center the map on the result location
+
                         map.setCenter(place.geometry.location);
                         map.setZoom(15);
 
-                        // Clear existing markers
+
                         clearMarkers();
 
-                        // Add a marker for the place found
+
                         const marker = new google.maps.Marker({
                             position: place.geometry.location,
                             map: map,
-                            title: place.name
+                            title: place.name //adds a marker for the place
                         });
 
-                        // Show info window on marker click
+
                         const infowindow = new google.maps.InfoWindow({
                             content: place.name
                         });
@@ -92,7 +94,7 @@
             });
         }
 
-        // Perform a nearby search to pull restaurants in the area
+        // for the filter button
         function searchNearby(location, radius, minRating) {
             const request = {
                 location: location,
@@ -104,13 +106,13 @@
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     clearMarkers();  // Clear previous markers
 
-                    // Filter restaurants by rating
+                    // looking at rating
                     const filteredResults = results.filter(place => place.rating >= minRating && place.rating <= 5);
 
-                    // Add a marker for each restaurant that meets the rating criteria
+
                     filteredResults.forEach(function(place) {
                         if (place.geometry && place.geometry.location) {
-                            addMarker(place);
+                            addMarker(place); // adding a marker for each place
                         }
                     });
 
@@ -123,7 +125,7 @@
             });
         }
 
-        // Function to add a marker on the map for a given place
+
         function addMarker(place) {
             const marker = new google.maps.Marker({
                 position: place.geometry.location,
@@ -141,7 +143,7 @@
             });
         }
 
-        // Optional: Function to clear existing markers if you want to reset the map
+
         function clearMarkers() {
             for (let i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
@@ -150,7 +152,7 @@
         }
     </script>
 
-    <!-- Load Google Maps API with Places Library -->
+
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRWVo1v50HrzJZ_ckYSR7WbR3vWwroh0Q&libraries=places&callback=initMap">
     </script>
