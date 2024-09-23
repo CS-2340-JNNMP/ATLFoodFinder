@@ -5,39 +5,113 @@
 {% block content %}
     <div id="map" style="width: 100%; height: 90vh;"></div>
 
+    <div id="side-view" style="width: 30vh; height: 105vh; position: fixed; background-color: white; align-self: flex-start; display: none; flex-direction: column">
+        <h6 id="location-name" style="color: black">Location Name</h6>
+        <h6 id="address">Address</h6>
+        <h6 id="bottom" style="margin-top: auto">Bottom</h6>
+    </div>
+
     <script src="https://maps.googleapis.com/maps/api/js?key={{"AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"}}&libraries=places"></script>
     <script>
-      function initMap() {
-        let map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: 33.7490, lng: -84.3880 },
-          zoom: 14,
-        });
+      {#function initMap() {#}
+      {#  let map = new google.maps.Map(document.getElementById('map'), {#}
+      {#    center: { lat: 33.7490, lng: -84.3880 },#}
+      {#    zoom: 14,#}
+      {#  });#}
+      {##}
+      {#  const infowindow = new google.maps.InfoWindow();#}
+      {##}
+      {#  map.addListener('click', function(event) {#}
+      {#    const clickedLocation = event.latLng;#}
+      {#    const service = new google.maps.places.PlacesService(map);#}
+      {##}
+      {#    const request = {#}
+      {#      location: clickedLocation,#}
+      {#      radius: 50,#}
+      {#    };#}
+      {##}
+      {##}
+      {##}
+      {#    service.nearbySearch(request, function(results, status) {#}
+      {##}
+      {#      const place = results[0];#}
+      {#      infowindow.setContent('Place: ' + place.name + '<br>Location: ' + place.geometry.location);#}
+      {##}
+      {#      let side = document.getElementById("side-view");#}
+      {#      let name = document.getElementById("location-name");#}
+      {#      let address = document.getElementById("address");#}
+      {#      let bottom = document.getElementById("bottom");#}
+      {#      side.style["display"] = "flex";#}
+      {#      console.log(place.name);#}
+      {#      name.innerHTML = place.geometry.location;#}
+      {#      address.innerHTML = place.name;#}
+      {##}
+      {#      infowindow.setPosition(clickedLocation);#}
+      {#      infowindow.open(map);#}
+      {#    });#}
+      {#  });#}
+      {##}
+      {#window.onload = initMap;#}
 
-        map.addListener('click', function(event) {
-          const clickedLocation = event.latLng;
-          const service = new google.maps.places.PlacesService(map);
-          const infowindow = new google.maps.InfoWindow();
-
+        function initMap() {
+          const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 33.7490, lng: -84.3880 },
+            zoom: 15,
+          });
           const request = {
-            location: clickedLocation,
-            radius: 50,
+            placeId: "ChIJN1t_tDeuEmsRUsoyG83frY4",
+            fields: ["name", "formatted_address", "place_id", "geometry"],
           };
+          const infowindow = new google.maps.InfoWindow();
+          const service = new google.maps.places.PlacesService(map);
 
-          service.nearbySearch(request, function(results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-              const place = results[0];
-              infowindow.setContent('Place: ' + place.name + '<br>Location: ' + place.geometry.location);
-              infowindow.setPosition(clickedLocation);
-              infowindow.open(map);
-            } else {
-              infowindow.setContent('No place found at this location.');
-              infowindow.setPosition(clickedLocation);
-              infowindow.open(map);
+          service.getDetails(request, (place, status) => {
+
+            if (
+              status === google.maps.places.PlacesServiceStatus.OK &&
+              place &&
+              place.geometry &&
+              place.geometry.location
+            ) {
+              const marker = new google.maps.Marker({
+                map,
+                position: place.geometry.location,
+              });
+
+              console.log("working");
+
+              map.event.addListener("click", (event) => {
+                {#const content = document.createElement("div");#}
+                {#const nameElement = document.createElement("h2");#}
+
+                {#nameElement.textContent = place.name;#}
+                {#content.appendChild(nameElement);#}
+
+                {#const placeIdElement = document.createElement("p");#}
+
+                {#placeIdElement.textContent = place.place_id;#}
+                {#content.appendChild(placeIdElement);#}
+
+                {#const placeAddressElement = document.createElement("p");#}
+
+                {#placeAddressElement.textContent = place.formatted_address;#}
+                {#content.appendChild(placeAddressElement);#}
+                {#infowindow.setContent(content);#}
+                {#infowindow.open(map, marker);#}
+
+                let side = document.getElementById("side-view");
+                let name = document.getElementById("location-name");
+                let address = document.getElementById("address");
+                let bottom = document.getElementById("bottom");
+                side.style["display"] = "flex";
+                console.log(place.name);
+                name.innerHTML = place.name;
+                address.innerHTML = place.formatted_address;
+              });
             }
           });
-        });
-      }
+        }
 
-      window.onload = initMap;
+        window.onload = initMap;
     </script>
 {% endblock %}
