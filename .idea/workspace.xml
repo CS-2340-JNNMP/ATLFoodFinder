@@ -80,7 +80,7 @@
       <workItem from="1726463195074" duration="1958000" />
       <workItem from="1726466240549" duration="5603000" />
       <workItem from="1726687974972" duration="5209000" />
-      <workItem from="1727069244830" duration="5008000" />
+      <workItem from="1727069244830" duration="5479000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
@@ -119,6 +119,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Created Django Project" />
