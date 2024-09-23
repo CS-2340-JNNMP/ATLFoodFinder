@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+<form action="" method=POST> <!--The method="POST" specifies that the form will use the HTTP POST method to submit data.
+In Django, forms often use POST when sending sensitive or changing data (like user login details, file uploads, or any other data that affects the server state).-->
+    {%  csrf_token  %} <!--This is a Django template tag that inserts a CSRF token (Cross-Site Request Forgery token) into the form.
+The CSRF token is a security feature Django uses to prevent malicious attacks where unauthorized actions are performed on behalf of an authenticated user.-->
+<form>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Username</label>
+        <input type="text" class="form-control" name="username", aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+</form>
+
+</form>

@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Some front-end tweaks" />
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Fixed Google Maps Embed styling">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/core/register_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/register_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/core/templates/core/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/core/map.html" afterDir="false" />
+
+    <list default="true" id="c30288e5-7f2f-44da-b7ea-aed2806b98cb" name="Changes" comment="Implemented Google API">
+      <change beforePath="$PROJECT_DIR$/ATLFoodFinder/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ATLFoodFinder/settings.py" afterDir="false" />
+
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,13 +34,16 @@
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;nmoore4013&quot;
+    &quot;assignee&quot;: &quot;NityaPotti&quot;
+    &quot;assignee&quot;: &quot;JevonTwitty&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder&quot;,
-    &quot;accountId&quot;: &quot;f50a41c2-cdb4-45b9-ad9c-54a2899d038a&quot;
+    &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder.git&quot;,
+    &quot;accountId&quot;: &quot;3612c7a0-7947-484d-b6a3-63e0eb615d22&quot;
+    &quot;url&quot;: &quot;https://github.com/CS-2340-JNNMP/ATLFoodFinder1.git&quot;,
+    &quot;accountId&quot;: &quot;a276badf-abee-4700-9b78-74941627c6b8&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -42,14 +55,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "git-widget-placeholder": "#6 on Nitya",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.python.django.customization.DjangoModulesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Django Server.ATLFoodFinder.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Nash&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -57,7 +82,63 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/core/static/core" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ATLFoodFinder" type="Python.DjangoServer" factoryName="Django server">
+      <module name="ATLFoodFinder" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (ATLFoodFinder)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="ATLFoodFinder" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -75,12 +156,22 @@
       <option name="presentableId" value="Default" />
       <updated>1726304890788</updated>
       <workItem from="1726304904711" duration="9473000" />
-      <workItem from="1726462870237" duration="140000" />
-      <workItem from="1726463019089" duration="158000" />
-      <workItem from="1726463195074" duration="1958000" />
-      <workItem from="1726466240549" duration="5603000" />
-      <workItem from="1726687974972" duration="5209000" />
-      <workItem from="1727069244830" duration="5479000" />
+      <workItem from="1726689635276" duration="185000" />
+      <workItem from="1726689824896" duration="3229000" />
+      <workItem from="1726514351732" duration="12000" />
+      <workItem from="1726514365991" duration="47000" />
+      <workItem from="1726514478218" duration="1000" />
+      <workItem from="1726514487862" duration="7000" />
+      <workItem from="1726515422273" duration="293000" />
+      <workItem from="1726516238355" duration="1000" />
+      <workItem from="1726516353308" duration="2712000" />
+      <workItem from="1726605077370" duration="203000" />
+      <workItem from="1726605299948" duration="972000" />
+      <workItem from="1726670031981" duration="1640000" />
+      <workItem from="1726704585167" duration="4246000" />
+      <workItem from="1726798505530" duration="1235000" />
+      <workItem from="1726856024827" duration="2074000" />
+      <workItem from="1726926867807" duration="1902000" />
     </task>
     <task id="LOCAL-00001" summary="Created Django Project">
       <option name="closed" value="true" />
@@ -106,15 +197,23 @@
       <option name="project" value="LOCAL" />
       <updated>1726306803418</updated>
     </task>
-    <task id="LOCAL-00004" summary="Some front-end tweaks">
+    <task id="LOCAL-00004" summary="Implemented Google API">
       <option name="closed" value="true" />
-      <created>1727074460544</created>
+      <created>1726689850268</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1727074460544</updated>
+      <updated>1726689850268</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed Google Maps Embed styling">
+      <option name="closed" value="true" />
+      <created>1726706404187</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1726706404187</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,7 +234,9 @@
     <MESSAGE value="Created Django Project" />
     <MESSAGE value="Created Front and map page.&#10;Created the beginnings of the base template we'll be using for every head, which is essentially just the head navigation bar." />
     <MESSAGE value="Trivially tweaked the head navigation bar" />
-    <MESSAGE value="Some front-end tweaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some front-end tweaks" />
+    <MESSAGE value="Added several core pages we'll be needing for this project, as well as some basic styling. Will leave the rest of that up to the front-end team." />
+    <MESSAGE value="Implemented Google API" />
+    <MESSAGE value="Fixed Google Maps Embed styling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Google Maps Embed styling" />
   </component>
 </project>

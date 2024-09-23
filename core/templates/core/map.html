@@ -3,5 +3,41 @@
 {% block title %}Map{% endblock %}
 
 {% block content %}
-    <h1>The Map Page</h1>
+    <div id="map" style="width: 100%; height: 90vh;"></div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{"AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"}}&libraries=places"></script>
+    <script>
+      function initMap() {
+        let map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: 33.7490, lng: -84.3880 },
+          zoom: 14,
+        });
+
+        map.addListener('click', function(event) {
+          const clickedLocation = event.latLng;
+          const service = new google.maps.places.PlacesService(map);
+          const infowindow = new google.maps.InfoWindow();
+
+          const request = {
+            location: clickedLocation,
+            radius: 50,
+          };
+
+          service.nearbySearch(request, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              const place = results[0];
+              infowindow.setContent('Place: ' + place.name + '<br>Location: ' + place.geometry.location);
+              infowindow.setPosition(clickedLocation);
+              infowindow.open(map);
+            } else {
+              infowindow.setContent('No place found at this location.');
+              infowindow.setPosition(clickedLocation);
+              infowindow.open(map);
+            }
+          });
+        });
+      }
+
+      window.onload = initMap;
+    </script>
 {% endblock %}

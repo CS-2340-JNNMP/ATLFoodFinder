@@ -1,3 +1,6 @@
+
+
+
 * {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -5,6 +8,7 @@
 /*
 Uncomment the background-image properties in the class below to add a background image.
 */
+
 body {
     flex-direction: column;
     /*background-image: url("https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp");*/
@@ -18,6 +22,22 @@ body {
     /*background-color: red;*/
     /*outline-color: purple;*/
     /*outline-width: thick;*/
+}
+
+p {
+    color: white;
+}
+
+footer {
+    border-top: black;
+    border-top-width: thin;
+    border-top-style: solid;
+    display: flex;
+    background-color: black;
+    height: 10vh;
+    margin-left: -10px;
+    width: 101%;
+    margin-bottom: -10px;
 }
 
 /*
@@ -38,7 +58,8 @@ Have it as a class in case we want to have some of the navigation bars differ ba
     border-bottom-color: grey;
     border-bottom-width: medium;
     border-bottom-style: solid;
-    margin-bottom: 24vh;
+    margin-bottom: 0;
+    z-index: 4;
 }
 
 /*
@@ -109,6 +130,7 @@ Using it to align them to the left of the screen.
 Styles the "Get Started" button only found on the front page in the index.html file.
 */
 #map-button {
+    margin-bottom: 50vh;
     font-size: x-large;
     padding: 15px;
     background-color: white;
@@ -125,3 +147,12 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     color: white;
     transition: background-color 0.5s, color 0.5s;
 }
+
+/*#loginBackground {*/
+/*     background-image: url("/static/core/login.png");*/
+/*    background-size: cover;*/
+/*    background-position: center;*/
+/*    height: 100vh; !* Make sure it covers the full height *!*/
+/*    margin: 0;*/
+/*}*/
+
