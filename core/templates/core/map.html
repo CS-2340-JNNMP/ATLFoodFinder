@@ -1,24 +1,59 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Map{% endblock %}
-
-{% block content %}
-
-
-
-    <!-- This is the search bar -->
-    <div style="margin-bottom: 10px;">
-        <input type="text" id="search-bar" placeholder="Search for a restaurant"
-               style="padding: 10px; width: 300px; font-size: 14px;">
-        <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        #top-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20%;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #bottom-section {
+            display: flex;
+            height: 80%;
+            width: 100%;
+        }
+        #map {
+            height: 100%;
+            width: 70%;
+        }
+        #sidebar {
+            height: 100%;
+            width: 30%;
+            overflow-y: auto;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="top-section">
+        <div>
+            <input type="text" id="search-bar" placeholder="Search for a restaurant" style="padding: 10px; width: 300px; font-size: 14px;">
+            <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
+            <div style="margin-top: 10px;">
+                <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
+                <input type="number" id="radiusInput"  style="font-size: 12px;">
+                <label for="ratingInput" style="font-size: 14px;">Minimum Rating:</label>
+                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="font-size: 12px;">
+                <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
+            </div>
+        </div>
     </div>
-    <!-- This is the filter bar -->
-    <div style="margin-bottom: 10px;">
-        <label for="radiusInput" style="font-size: 12px;">Radius (miles):</label>
-        <input type="number" id="radiusInput" value="5" style="font-size: 12px;">
-        <label for="ratingInput" style="font-size: 12px;">Minimum Rating:</label>
-        <input type="number" id="ratingInput" value="4.5" step="0.1" min="0" max="5" style="font-size: 12px;">
-        <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
+    <div id="bottom-section">
+        <div id="sidebar"></div>
+        <div id="map"></div>
     </div>
 
     <!-- This is the map -->
@@ -28,65 +63,49 @@
         let map;
         let service;
         let markers = [];
-        // we are initializing the map
+
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
-
 
             map = new google.maps.Map(document.getElementById('map'), {
                 center: userLocation,
                 zoom: 13
             });
 
-            // we are initializing places
             service = new google.maps.places.PlacesService(map);
 
-            // this is the onclick for search
             document.getElementById('search-button').addEventListener('click', function() {
                 const query = document.getElementById('search-bar').value;
-                searchPlaces(query); // there is a function for this later
+                searchPlaces(query);
             });
 
-            //this is the onclick for filter
             document.getElementById('filterButton').addEventListener('click', function() {
-                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;  // Convert miles to meters
+                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
                 const minRating = parseFloat(document.getElementById('ratingInput').value);
-                searchNearby(userLocation, radius, minRating); // there is a function for this later
+                searchNearby(userLocation, radius, minRating);
             });
         }
-        //for search button
+
         function searchPlaces(query) {
             const request = {
                 query: query,
-                fields: ['name', 'geometry'],
+                fields: ['name', 'geometry', 'place_id'],
             };
-
 
             service.findPlaceFromQuery(request, function(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-                    const place = results[0];  // Get the first result
-                    if (place.geometry && place.geometry.location) {
-
-                        map.setCenter(place.geometry.location);
+                    clearMarkers();
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.innerHTML = ''; // Clear previous results
+                    results.forEach(function(place) {
+                        if (place.geometry && place.geometry.location) {
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
+                        }
+                    });
+                    if (results.length > 0) {
+                        map.setCenter(results.geometry.location);
                         map.setZoom(15);
-
-
-                        clearMarkers();
-
-
-                        const marker = new google.maps.Marker({
-                            position: place.geometry.location,
-                            map: map,
-                            title: place.name //adds a marker for the place
-                        });
-
-
-                        const infowindow = new google.maps.InfoWindow({
-                            content: place.name
-                        });
-                        marker.addListener('click', function() {
-                            infowindow.open(map, marker);
-                        });
                     }
                 } else {
                     alert('Place not found');
@@ -94,28 +113,24 @@
             });
         }
 
-        // for the filter button
         function searchNearby(location, radius, minRating) {
+
             const request = {
                 location: location,
                 radius: radius,
                 type: ['restaurant']
             };
-
+            clearMarkers();
             service.nearbySearch(request, function(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-                    clearMarkers();  // Clear previous markers
-
-                    // looking at rating
+                    clearMarkers();
                     const filteredResults = results.filter(place => place.rating >= minRating && place.rating <= 5);
-
-
                     filteredResults.forEach(function(place) {
                         if (place.geometry && place.geometry.location) {
-                            addMarker(place); // adding a marker for each place
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
                         }
                     });
-
                     if (filteredResults.length === 0) {
                         alert('No restaurants found with the specified criteria.');
                     }
@@ -125,7 +140,6 @@
             });
         }
 
-
         function addMarker(place) {
             const marker = new google.maps.Marker({
                 position: place.geometry.location,
@@ -133,16 +147,43 @@
                 title: place.name
             });
             markers.push(marker);
-
-            const infowindow = new google.maps.InfoWindow({
-                content: `<strong>${place.name}</strong><br>Rating: ${place.rating}`
-            });
-
             marker.addListener('click', function() {
-                infowindow.open(map, marker);
+                getPlaceDetails(place.place_id);
             });
         }
 
+        function getPlaceDetails(placeId, append = false) {
+            const request = {
+                placeId: placeId,
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'url']
+            };
+            service.getDetails(request, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    showDetails(place, append);
+                } else {
+                    alert('Details not found');
+                }
+            });
+        }
+
+        function showDetails(place, append = false) {
+            const sidebar = document.getElementById('sidebar');
+            const placeDetails = `
+                <div>
+                    <h2>${place.name}</h2>
+                    <p><strong>Address:</strong> ${place.formatted_address}</p>
+                    <p><strong>Rating:</strong> ${place.rating}</p>
+                    <p><strong>Business Status:</strong> ${place.business_status}</p>
+                    <p><strong>Types:</strong> ${place.types.join(', ')}</p>
+                    <p><strong>URL:</strong> <a href="${place.url}" target="_blank">View on Google Maps</a></p>
+                </div>
+            `;
+            if (append) {
+                sidebar.innerHTML += placeDetails;
+            } else {
+                sidebar.innerHTML = placeDetails;
+            }
+        }
 
         function clearMarkers() {
             for (let i = 0; i < markers.length; i++) {
@@ -152,9 +193,6 @@
         }
     </script>
 
-
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRWVo1v50HrzJZ_ckYSR7WbR3vWwroh0Q&libraries=places&callback=initMap">
-    </script>
-
-{% endblock %}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>
+</body>
+</html>
