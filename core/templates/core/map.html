@@ -1,117 +1,195 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Map{% endblock %}
-
-{% block content %}
-    <div id="map" style="width: 100%; height: 90vh;"></div>
-
-    <div id="side-view" style="width: 30vh; height: 105vh; position: fixed; background-color: white; align-self: flex-start; display: none; flex-direction: column">
-        <h6 id="location-name" style="color: black">Location Name</h6>
-        <h6 id="address">Address</h6>
-        <h6 id="bottom" style="margin-top: auto">Bottom</h6>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        #top-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20%;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #bottom-section {
+            display: flex;
+            height: 80%;
+            width: 100%;
+        }
+        #map {
+            height: 100%;
+            width: 70%;
+        }
+        #sidebar {
+            height: 100%;
+            width: 30%;
+            overflow-y: auto;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="top-section">
+        <div>
+            <input type="text" id="search-bar" placeholder="Search for a restaurant" style="padding: 10px; width: 300px; font-size: 14px;">
+            <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
+            <div style="margin-top: 10px;">
+                <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
+                <input type="number" id="radiusInput"  style="font-size: 12px;">
+                <label for="ratingInput" style="font-size: 14px;">Minimum Rating:</label>
+                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="font-size: 12px;">
+                <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
+            </div>
+        </div>
+    </div>
+    <div id="bottom-section">
+        <div id="sidebar"></div>
+        <div id="map"></div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{"AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"}}&libraries=places"></script>
     <script>
-      {#function initMap() {#}
-      {#  let map = new google.maps.Map(document.getElementById('map'), {#}
-      {#    center: { lat: 33.7490, lng: -84.3880 },#}
-      {#    zoom: 14,#}
-      {#  });#}
-      {##}
-      {#  const infowindow = new google.maps.InfoWindow();#}
-      {##}
-      {#  map.addListener('click', function(event) {#}
-      {#    const clickedLocation = event.latLng;#}
-      {#    const service = new google.maps.places.PlacesService(map);#}
-      {##}
-      {#    const request = {#}
-      {#      location: clickedLocation,#}
-      {#      radius: 50,#}
-      {#    };#}
-      {##}
-      {##}
-      {##}
-      {#    service.nearbySearch(request, function(results, status) {#}
-      {##}
-      {#      const place = results[0];#}
-      {#      infowindow.setContent('Place: ' + place.name + '<br>Location: ' + place.geometry.location);#}
-      {##}
-      {#      let side = document.getElementById("side-view");#}
-      {#      let name = document.getElementById("location-name");#}
-      {#      let address = document.getElementById("address");#}
-      {#      let bottom = document.getElementById("bottom");#}
-      {#      side.style["display"] = "flex";#}
-      {#      console.log(place.name);#}
-      {#      name.innerHTML = place.geometry.location;#}
-      {#      address.innerHTML = place.name;#}
-      {##}
-      {#      infowindow.setPosition(clickedLocation);#}
-      {#      infowindow.open(map);#}
-      {#    });#}
-      {#  });#}
-      {##}
-      {#window.onload = initMap;#}
+        let map;
+        let service;
+        let markers = [];
 
         function initMap() {
-          const map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 33.7490, lng: -84.3880 },
-            zoom: 15,
-          });
-          const request = {
-            placeId: "ChIJN1t_tDeuEmsRUsoyG83frY4",
-            fields: ["name", "formatted_address", "place_id", "geometry"],
-          };
-          const infowindow = new google.maps.InfoWindow();
-          const service = new google.maps.places.PlacesService(map);
+            const userLocation = { lat: 33.7490, lng: -84.3880 };
 
-          service.getDetails(request, (place, status) => {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: userLocation,
+                zoom: 13
+            });
 
-            if (
-              status === google.maps.places.PlacesServiceStatus.OK &&
-              place &&
-              place.geometry &&
-              place.geometry.location
-            ) {
-              const marker = new google.maps.Marker({
-                map,
-                position: place.geometry.location,
-              });
+            service = new google.maps.places.PlacesService(map);
 
-              console.log("working");
+            document.getElementById('search-button').addEventListener('click', function() {
+                const query = document.getElementById('search-bar').value;
+                searchPlaces(query);
+            });
 
-              map.event.addListener("click", (event) => {
-                {#const content = document.createElement("div");#}
-                {#const nameElement = document.createElement("h2");#}
-
-                {#nameElement.textContent = place.name;#}
-                {#content.appendChild(nameElement);#}
-
-                {#const placeIdElement = document.createElement("p");#}
-
-                {#placeIdElement.textContent = place.place_id;#}
-                {#content.appendChild(placeIdElement);#}
-
-                {#const placeAddressElement = document.createElement("p");#}
-
-                {#placeAddressElement.textContent = place.formatted_address;#}
-                {#content.appendChild(placeAddressElement);#}
-                {#infowindow.setContent(content);#}
-                {#infowindow.open(map, marker);#}
-
-                let side = document.getElementById("side-view");
-                let name = document.getElementById("location-name");
-                let address = document.getElementById("address");
-                let bottom = document.getElementById("bottom");
-                side.style["display"] = "flex";
-                console.log(place.name);
-                name.innerHTML = place.name;
-                address.innerHTML = place.formatted_address;
-              });
-            }
-          });
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
+                const minRating = parseFloat(document.getElementById('ratingInput').value);
+                searchNearby(userLocation, radius, minRating);
+            });
         }
 
-        window.onload = initMap;
+        function searchPlaces(query) {
+            const request = {
+                query: query,
+                fields: ['name', 'geometry', 'place_id'],
+            };
+
+            service.findPlaceFromQuery(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+                    clearMarkers();
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.innerHTML = ''; // Clear previous results
+                    results.forEach(function(place) {
+                        if (place.geometry && place.geometry.location) {
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
+                        }
+                    });
+                    if (results.length > 0) {
+                        map.setCenter(results.geometry.location);
+                        map.setZoom(15);
+                    }
+                } else {
+                    alert('Place not found');
+                }
+            });
+        }
+
+        function searchNearby(location, radius, minRating) {
+
+            const request = {
+                location: location,
+                radius: radius,
+                type: ['restaurant']
+            };
+            clearMarkers();
+            service.nearbySearch(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+                    clearMarkers();
+                    const filteredResults = results.filter(place => place.rating >= minRating && place.rating <= 5);
+                    filteredResults.forEach(function(place) {
+                        if (place.geometry && place.geometry.location) {
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
+                        }
+                    });
+                    if (filteredResults.length === 0) {
+                        alert('No restaurants found with the specified criteria.');
+                    }
+                } else {
+                    alert('No restaurants found.');
+                }
+            });
+        }
+
+        function addMarker(place) {
+            const marker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: place.name
+            });
+            markers.push(marker);
+            marker.addListener('click', function() {
+                getPlaceDetails(place.place_id);
+            });
+        }
+
+        function getPlaceDetails(placeId, append = false) {
+            const request = {
+                placeId: placeId,
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'url']
+            };
+            service.getDetails(request, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    showDetails(place, append);
+                } else {
+                    alert('Details not found');
+                }
+            });
+        }
+
+        function showDetails(place, append = false) {
+            const sidebar = document.getElementById('sidebar');
+            const placeDetails = `
+                <div>
+                    <h2>${place.name}</h2>
+                    <p><strong>Address:</strong> ${place.formatted_address}</p>
+                    <p><strong>Rating:</strong> ${place.rating}</p>
+                    <p><strong>Business Status:</strong> ${place.business_status}</p>
+                    <p><strong>Types:</strong> ${place.types.join(', ')}</p>
+                    <p><strong>URL:</strong> <a href="${place.url}" target="_blank">View on Google Maps</a></p>
+                </div>
+            `;
+            if (append) {
+                sidebar.innerHTML += placeDetails;
+            } else {
+                sidebar.innerHTML = placeDetails;
+            }
+        }
+
+        function clearMarkers() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
     </script>
-{% endblock %}
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>
+</body>
+</html>
