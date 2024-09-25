@@ -12,7 +12,9 @@ Uncomment the background-image properties in the class below to add a background
 body {
     flex-direction: column;
     /*background-image: url("https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp");*/
-    background-image: url('../core/images/NiceRestaurant2.png');
+
+    background-image: url('../core/images/NiceRestaurant2.jpeg');
+
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
