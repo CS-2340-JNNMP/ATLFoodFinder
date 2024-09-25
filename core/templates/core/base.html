@@ -3,7 +3,7 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}">
 
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,7 @@
     </head>
 
     <body>
+
         <nav class="header">
             <a href="/" class="header-button" id="main-button">ATLFoodFinder</a>
             <div id="side-buttons">
@@ -21,14 +22,25 @@
                     <a href="/login" class="header-button">Log In</a>
                 {% endif %}
 
-{#                <a href="/register_user" class="header-button">Sign Up</a>#}
+{#                <a href="/register_user" class="header-button">Sign Up !</a>#}
                 <a href="/contact" class="header-button">Contact</a>
             </div>
         </nav>
 
+        <div>
+
+        </div>
+{#        <img src='images/ItalianRestaurantBackgroundImage.jpg'#}
+{#             alt="Aesthetic Restaraunt" class="background-image">#}
         <div id="title">
             {% block content %}
             {% endblock %}
         </div>
+
+        <footer>
+            <div style="justify-content: center; display: flex; flex: 1">
+                <p>Footer</p>
+            </div>
+        </footer>
     </body>
 </html>
