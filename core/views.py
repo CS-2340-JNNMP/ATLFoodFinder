@@ -58,3 +58,6 @@ def profile(request):
 
 def contact(request):
     return render(request, "core/contact.html")
+
+def search(request):
+    return render(request, "core/search.html")
