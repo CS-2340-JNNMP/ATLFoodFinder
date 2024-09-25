@@ -11,9 +11,36 @@ Uncomment the background-image properties in the class below to add a background
 
 body {
     flex-direction: column;
-    /*background-image: url("https://www.usatoday.com/gcdn/-mm-/11d1f5a0f30c78e5e42da1f24d951e3266ecd59c/c=0-61-2032-1208/local/-/media/USATODAY/USATODAY/2013/11/23//1385183471001-2-lemeurice-DorchesterCollection.jpg?width=2032&height=1147&fit=crop&format=pjpg&auto=webp");*/
-    /*background-repeat: no-repeat;*/
-    /*background-size: cover;*/
+    /*background-image: url("https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp");*/
+
+    background-image: url('../core/images/NiceRestaurant2.jpeg');
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-top: -1px;
+
+    /*background-color: red;*/
+    /*outline-color: purple;*/
+    /*outline-width: thick;*/
+}
+
+p {
+    color: white;
+}
+
+footer {
+    border-top: black;
+    border-top-width: thin;
+    border-top-style: solid;
+    display: flex;
+    background-color: black;
+    height: 10vh;
+    margin-left: -10px;
+    width: 101%;
+    margin-bottom: -10px;
 }
 
 /*
@@ -22,16 +49,17 @@ Have it as a class in case we want to have some of the navigation bars differ ba
 */
 .header {
     flex-direction: row;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 1%;
+    padding-bottom: 1%;
     /*padding-left: 5%;*/
     /*padding-right: 5%;*/
     display: flex;
     width: 100%;
-    background-color: white;
+    align-self: center;
+    background-color: #3e3d3b;
     align-items: center;
-    border-bottom: black;
-    border-bottom-width: thin;
+    border-bottom-color: grey;
+    border-bottom-width: medium;
     border-bottom-style: solid;
     margin-bottom: 0;
     z-index: 4;
@@ -41,7 +69,7 @@ Have it as a class in case we want to have some of the navigation bars differ ba
 This is the class that controls the styling of the head navigation buttons, such as ATLFoodFinder, Sign Up, Login, etc.
 */
 .header-button {
-    color: black;
+    color: white;
     text-decoration: none;
     margin-right: 5%;
     font-weight: 1000;
@@ -55,12 +83,19 @@ This controls the styling for when a user hovers over the head navigation button
     color: gray;
     transition: color 0.5s;
 }
-
+.testingBox {
+    margin-top: 4.3%;
+    width: 50%;
+    height: 90%;
+    align-self: center;
+    justify-self: center;
+    margin-left: 1.8%;
+}
 /*
 Should probably rename this. This styles the big words seen on every screen. The first instance of this you see is "Find Food Near You"
 */
 #title {
-    font-size: xxx-large;
+    font-size: xx-large;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,6 +105,9 @@ Should probably rename this. This styles the big words seen on every screen. The
     /*position: relative;*/
     text-align: center;
     flex-direction: column;
+    color: white;
+    justify-self: center;
+    align-self: center;
 }
 
 /*
@@ -95,6 +133,7 @@ Using it to align them to the left of the screen.
 Styles the "Get Started" button only found on the front page in the index.html file.
 */
 #map-button {
+    margin-bottom: 50vh;
     font-size: x-large;
     padding: 15px;
     background-color: white;
@@ -119,4 +158,20 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
 /*    height: 100vh; !* Make sure it covers the full height *!*/
 /*    margin: 0;*/
 /*}*/
+
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    transition: left 0.3s ease;
+}
+.sidebar.visible {
+    left: 0;  /* Move the sidebar into view */
+}
 
