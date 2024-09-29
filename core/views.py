@@ -59,23 +59,23 @@ def profile(request):
 def contact(request):
     return render(request, "core/contact.html")
 
-def saved_restaurants(request):
-    restaurants = Restaurant.objects.all()
-    return render(request, 'core/profile.html', {'restaurants': restaurants})
-
-
-def save_restaurant(request, place_id):
-    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'}"
-
-    response = requests.get(url)
-    details = response.json().get('result', {})
-
-    # Assuming you have a Restaurant model
-    Restaurant.objects.create(
-        name=details.get('name'),
-        address=details.get('formatted_address'),
-        rating=details.get('rating'),
-        place_id=details.get('place_id'),
-    )
+# def saved_restaurants(request):
+#     restaurants = Restaurant.objects.all()
+#     return render(request, 'core/profile.html', {'restaurants': restaurants})
+#
+#
+# def save_restaurant(request, place_id):
+#     url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'}"
+#
+#     response = requests.get(url)
+#     details = response.json().get('result', {})
+#
+#     # Assuming you have a Restaurant model
+#     Restaurant.objects.create(
+#         name=details.get('name'),
+#         address=details.get('formatted_address'),
+#         rating=details.get('rating'),
+#         place_id=details.get('place_id'),
+#     )
 
     return redirect('saved_restaurants')

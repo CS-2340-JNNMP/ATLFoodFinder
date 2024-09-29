@@ -168,22 +168,35 @@
 
         function showDetails(place, append = false) {
             const sidebar = document.getElementById('sidebar');
-            const placeDetails = `
-                <div>
-                    <h2>${place.name}</h2>
-                    <p><strong>Address:</strong> ${place.formatted_address}</p>
-                    <p><strong>Rating:</strong> ${place.rating}</p>
-                    <p><strong>Business Status:</strong> ${place.business_status}</p>
-                    <p><strong>Types:</strong> ${place.types.join(', ')}</p>
-                    <p><strong>URL:</strong> <a href="${place.url}" target="_blank">View on Google Maps</a></p>
-                </div>
-            `;
+
+            const placeDetails = document.createElement('div');
+
+          placeDetails.innerHTML = `
+        <h2>${place.name}</h2>
+        <p><strong>Address:</strong> ${place.formatted_address}</p>
+        <p><strong>Rating:</strong> ${place.rating}</p>
+        <p><strong>Business Status:</strong> ${place.business_status}</p>
+        <p><strong>Types:</strong> ${place.types.join(', ')}</p>
+        <p><strong>URL:</strong> <a href="${place.url}" target="_blank">View on Google Maps</a></p>
+        <button id="save-button" class="save-button">Save</button>
+    `;
+
+
+
+
             if (append) {
-                sidebar.innerHTML += placeDetails;
+                sidebar.appendChild(placeDetails);
             } else {
-                sidebar.innerHTML = placeDetails;
+               sidebar.innerHTML = '';
+        sidebar.appendChild(placeDetails);
             }
+            const saveButton = placeDetails.querySelector('#save-button');
+    saveButton.addEventListener('click', savee);
+
         }
+        function savee() {
+    console.log("hi");
+}
 
         function clearMarkers() {
             for (let i = 0; i < markers.length; i++) {
