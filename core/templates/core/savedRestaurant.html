@@ -1,0 +1,22 @@
+<!-- savedRestaurant.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saved Restaurants</title>
+</head>
+<body>
+    <h1>Your Saved Restaurants</h1>
+    <ul>
+        {% for saved in saved_restaurants %}
+            <li>
+                <h2>{{ saved.restaurant.name }}</h2>
+                <p><strong>Address:</strong> {{ saved.restaurant.address }}</p>
+                <p><strong>Rating:</strong> {{ saved.restaurant.rating }}</p>
+            </li>
+        {% empty %}
+            <p>No saved restaurants yet.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
