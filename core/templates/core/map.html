@@ -1,20 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Map</title>
     <style>
+        * {
+            color: #3e3d3b;
+        }
+        p {
+            color: #3e3d3b;
+        }
         body {
+            overflow-x: hidden;
+            {#background-color: #3e3d3b;#}
+            background-image: none;
             display: flex;
             flex-direction: column;
             height: 100vh;
             margin: 0;
         }
+        @media (max-width: 1300px) {
+            #bottom-section {
+              flex-direction: column-reverse;
+              align-items: center;
+            }
+            #sidebar {
+                width: 100%;
+                display: flex;
+            }
+        }
         #top-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 20%;
+            height: 100px;
             width: 100%;
             padding: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -26,21 +52,28 @@
         }
         #map {
             height: 100%;
-            width: 70%;
+            width: 200%;
         }
         #sidebar {
+            {#display: none;#}
             height: 100%;
-            width: 30%;
+            max-height: 100vh;
+            width: 100%;
             overflow-y: auto;
-            padding: 10px;
+            scroll
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        #sidebar::-webkit-scrollbar {
+          display: none;
         }
     </style>
 </head>
 <body>
     <div id="top-section">
         <div>
-            <input type="text" id="search-bar" placeholder="Search for a restaurant" style="padding: 10px; width: 300px; font-size: 14px;">
+            <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; font-size: 14px;">
             <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
             <div style="margin-top: 10px;">
                 <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
@@ -52,7 +85,7 @@
         </div>
     </div>
     <div id="bottom-section">
-        <div id="sidebar"></div>
+        <div id="sidebar" style="display: none"></div>
         <div id="map"></div>
     </div>
 
@@ -60,13 +93,60 @@
         let map;
         let service;
         let markers = [];
+        let photos = [];
+        let currentPhoto;
+        let photoIndex = 0;
+
+        function search(ele) {
+            if(event.key === 'Enter') {
+                searchPlaces(document.getElementById('search-bar').value);
+            }
+        }
 
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
 
+            const defaultBounds = {
+              north: userLocation.lat + 0.1,
+              south: userLocation.lat - 0.1,
+              east: userLocation.lng + 0.1,
+              west: userLocation.lng - 0.1,
+            };
+
+            const input = document.getElementById("search-bar");
+
+            const options = {
+              bounds: defaultBounds,
+              componentRestrictions: { country: "us" },
+              fields: ["address_components", "geometry", "icon", "name"],
+              strictBounds: false,
+            };
+
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            autocomplete.setFields(["place_id", "geometry", "name"]);
+
+            autocomplete.addListener('place_changed', function() {
+                const place = autocomplete.getPlace();
+            });
+
             map = new google.maps.Map(document.getElementById('map'), {
                 center: userLocation,
                 zoom: 13
+            });
+
+            map.addListener('click', function(event) {
+                const latLng = event.latLng;
+
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ location: latLng }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+                        const query = results[0].formatted_address;
+                        searchPlaces(query);
+                    } else {
+                        alert('No nearby place found.');
+                    }
+                });
             });
 
             service = new google.maps.places.PlacesService(map);
@@ -82,6 +162,12 @@
                 searchNearby(userLocation, radius, minRating);
             });
         }
+
+
+
+
+
+
 
         function searchPlaces(query) {
             const request = {
@@ -152,7 +238,7 @@
         function getPlaceDetails(placeId, append = false) {
             const request = {
                 placeId: placeId,
-                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'url']
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos']
             };
             service.getDetails(request, function(place, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -163,22 +249,116 @@
             });
         }
 
+
+
+
+
+
+        function nextPhoto() {
+            if (photoIndex + 1 >= photos.length) {
+                photoIndex = 0;
+            } else {
+                photoIndex++;
+            }
+            updatePhoto();
+        }
+
+        function previousPhoto() {
+            if (photoIndex - 1 < 0) {
+                photoIndex = photos.length - 1;
+            } else {
+                photoIndex--;
+            }
+            updatePhoto();
+        }
+
+        function carousel(photos) {
+            const sidebar = document.getElementById('sidebar');
+
+            currentPhoto = photos[photoIndex].getUrl({maxWidth: 400, maxHeight: 400});
+
+            sidebar.style.display = "block";
+
+            let carousel_content = `
+                <div id="carousel" style="position: relative; height: 400px; width: 100%; background-color: #3e3d3b">
+                    <div id="image-holder" style="height: 100%; display: flex; justify-content: center; align-items: center;">
+                        <img src="${currentPhoto}" alt="Current Photo" style="max-width: 100%; max-height: 100%;" />
+                    </div>
+
+                    <button style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 5rem; color: white; cursor: pointer;" type="button" onclick="previousPhoto()">&#10558;</button>
+
+                    <button style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 5rem; color: white; cursor: pointer;" type="button" onclick="nextPhoto()">&#10559;</button>
+                </div>
+            `;
+
+            sidebar.innerHTML = carousel_content;
+        }
+
+        function updatePhoto() {
+            const photoHolder = document.getElementById('image-holder');
+
+            currentPhoto = photos[photoIndex].getUrl({maxWidth: 400, maxHeight: 400});
+
+            let the_content = `
+                <img src="${currentPhoto}" alt="" style=""/>
+            `
+
+            photoHolder.innerHTML = the_content;
+        }
+
+
+
+
+
+
         function showDetails(place, append = false) {
             const sidebar = document.getElementById('sidebar');
+
+            let placeReviews = '';
+
+            if (place.reviews && place.reviews.length > 0) {
+                placeReviews += '<h3>Reviews:</h3><ul>';
+                place.reviews.forEach(review => {
+                    placeReviews += `
+                            <p><strong>${review.author_name}:</strong> ${review.rating} stars</p>
+                            <p><em>${review.relative_time_description}</em></p>
+                            <div><p>${review.text}</p></div>
+                    `;
+                });
+                placeReviews += '</ul>';
+            } else {
+                placeReviews += '<p><em>No reviews available</em></p>';
+            }
+
+            let photoUrl = '';
+            if (place.photos && place.photos.length > 0) {
+                // Use the getUrl method to retrieve the image URL
+                photoUrl = place.photos[0].getUrl({maxWidth: 400, maxHeight: 400});
+            }
+
+            photos = place.photos;
+
+            if (photos && photos.length > 0) {
+                carousel(photos);
+            }
+
             const placeDetails = `
                 <div>
+                    {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
                     <h2>${place.name}</h2>
                     <p><strong>Address:</strong> ${place.formatted_address}</p>
                     <p><strong>Rating:</strong> ${place.rating}</p>
                     <p><strong>Business Status:</strong> ${place.business_status}</p>
                     <p><strong>Types:</strong> ${place.types.join(', ')}</p>
-                    <p><strong>URL:</strong> <a href="${place.url}" target="_blank">View on Google Maps</a></p>
+                    <p> <a href="${place.website}" target="_blank"><strong>Visit Website</strong></a></p>
+                    ${placeReviews}
                 </div>
             `;
+
             if (append) {
                 sidebar.innerHTML += placeDetails;
             } else {
-                sidebar.innerHTML = placeDetails;
+                sidebar.innerHTML += placeDetails;
             }
         }
 
@@ -193,3 +373,5 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>
 </body>
 </html>
+
+{% endblock %}
