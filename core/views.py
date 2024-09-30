@@ -75,7 +75,7 @@ def save_restaurant(request, place_id):
         response = requests.get(url)
         details = response.json().get('result', {})
 
-        # Create or get the restaurant
+
         restaurant, created = Restaurant.objects.get_or_create(
             place_id=place_id,
             defaults={
@@ -85,7 +85,7 @@ def save_restaurant(request, place_id):
             }
         )
 
-        # Link the restaurant with the user
+
         SavedRestaurant.objects.get_or_create(user=request.user, restaurant=restaurant)
 
         return redirect('saved_restaurants')
