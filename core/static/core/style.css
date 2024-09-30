@@ -31,7 +31,7 @@ p {
     color: white;
 }
 
-footer {
+/* footer {
     border-top: black;
     border-top-width: thin;
     border-top-style: solid;
@@ -40,8 +40,8 @@ footer {
     height: 10vh;
     margin-left: -10px;
     width: 101%;
-    margin-bottom: -10px;
-}
+    margin-bottom: -10px; 
+} */
 
 /*
 This is the class that controls the styling of the head navigation bar on all the pages.
@@ -174,5 +174,40 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
 }
 .sidebar.visible {
     left: 0;  /* Move the sidebar into view */
+}
+
+footer {
+    background-color: #3e3d3b;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ddd;
 }
 
