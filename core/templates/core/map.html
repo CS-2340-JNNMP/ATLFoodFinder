@@ -92,7 +92,7 @@
                 fields: ['name', 'geometry', 'place_id'],
             };
 
-            service.findPlaceFromQuery(request, function(results, status) {
+            service.findPlaceFromQuery(request, function (results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     clearMarkers();
                     const sidebar = document.getElementById('sidebar');
@@ -100,7 +100,7 @@
 
                     // Check if we have results
                     if (results.length > 0) {
-                        results.forEach(function(place) {
+                        results.forEach(function (place) {
                             if (place.geometry && place.geometry.location) {
                                 addMarker(place);
                                 getPlaceDetails(place.place_id, true);
@@ -118,6 +118,7 @@
                     console.error("Error in Places API request:", status);
                     alert('Place not found. Please try a different query.');
                 }
+
             });
 }
 
@@ -164,9 +165,9 @@
         function getPlaceDetails(placeId, append = false) {
             const request = {
                 placeId: placeId,
-                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'url']
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'url', 'place_id']
             };
-            service.getDetails(request, function(place, status) {
+            service.getDetails(request, function(place, status, request) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     showDetails(place, append);
                 } else {
@@ -175,7 +176,7 @@
             });
         }
 
-        function showDetails(place, append = false) {
+        function showDetails(place, append = false, request) {
             const sidebar = document.getElementById('sidebar');
 
             const placeDetails = document.createElement('div');
@@ -196,25 +197,27 @@
         sidebar.appendChild(placeDetails);
             }
 
+          console.log(place);
     const saveButton = placeDetails.querySelector('.save-button');
     saveButton.addEventListener('click', function() {
-        savee(place);  // Ensure placeId is passed correctly
+        savee(place.place_id);  // Ensure placeId is passed correctly
     });
 
         }
-        function savee(place) {
-    const placeId = place
-            if (!placeId) {
-        console.error("placeId is undefined or null");
-        return; // Exit if placeId is not valid
-    }
-    fetch(`/save_restaurant/${placeId}/`, {
+        function savee(place,) {
+    {#const placeId = place#}
+    {#        if (!placeId) {#}
+    {#    console.error("placeId is undefined or null");#}
+    {#    return; // Exit if placeId is not valid#}
+
+    fetch(`/save_restaurant/${place}/`, {
         method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token for security
             'Content-Type': 'application/json'
         }
     }).then(response => {
+        console.log(response);
         if (response.ok) {
             alert('Restaurant saved successfully!');
         } else {
@@ -238,12 +241,13 @@ function getCookie(name) {
     return cookieValue;
 }
 
-        function clearMarkers() {
-            for (let i = 0; i < markers.length; i++) {
+function clearMarkers() {
+    for (let i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
-            }
-            markers = [];
-        }
+    }
+    markers = [];
+}
+
     </script>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>

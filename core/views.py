@@ -71,13 +71,14 @@ def contact(request):
 def save_restaurant(request, place_id):
     if request.method == 'POST':
         # Retrieve restaurant details from Google Places API
-        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={'YOUR_API_KEY'}"
+
+        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"
         response = requests.get(url)
         details = response.json().get('result', {})
 
 
         restaurant, created = Restaurant.objects.get_or_create(
-            place_id=place_id,
+            place_id=details.get('place_id'),
             defaults={
                 'name': details.get('name'),
                 'address': details.get('formatted_address'),
