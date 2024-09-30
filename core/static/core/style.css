@@ -95,6 +95,7 @@ This controls the styling for when a user hovers over the head navigation button
 Should probably rename this. This styles the big words seen on every screen. The first instance of this you see is "Find Food Near You"
 */
 #title {
+    width: 100%;
     font-size: xx-large;
     display: flex;
     justify-content: center;
