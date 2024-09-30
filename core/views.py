@@ -2,7 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
+from .models import Restaurant, SavedRestaurant
+import requests
 # Create your views here.
 
 def index(request):
@@ -58,3 +63,55 @@ def profile(request):
 
 def contact(request):
     return render(request, "core/contact.html")
+    # views.py
+
+
+@login_required
+@csrf_exempt
+def save_restaurant(request, place_id):
+    if request.method == 'POST':
+        # Retrieve restaurant details from Google Places API
+
+        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"
+        response = requests.get(url)
+        details = response.json().get('result', {})
+
+
+        restaurant, created = Restaurant.objects.get_or_create(
+            place_id=details.get('place_id'),
+            defaults={
+                'name': details.get('name'),
+                'address': details.get('formatted_address'),
+                'rating': details.get('rating')
+            }
+        )
+
+
+        SavedRestaurant.objects.get_or_create(user=request.user, restaurant=restaurant)
+
+        return redirect('saved_restaurants')
+
+@login_required
+def saved_restaurants(request):
+    saved_restaurants = SavedRestaurant.objects.filter(user=request.user)
+    return render(request, 'core/savedRestaurant.html', {'saved_restaurants': saved_restaurants})
+
+    # def saved_restaurants(request):
+#     restaurants = Restaurant.objects.all()
+#     return render(request, 'core/profile.html', {'restaurants': restaurants})
+#
+#
+# def save_restaurant(request, place_id):
+#     url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'}"
+#
+#     response = requests.get(url)
+#     details = response.json().get('result', {})
+#
+#     # Assuming you have a Restaurant model
+#     Restaurant.objects.create(
+#         name=details.get('name'),
+#         address=details.get('formatted_address'),
+#         rating=details.get('rating'),
+#         place_id=details.get('place_id'),
+#     )
+

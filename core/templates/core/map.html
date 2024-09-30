@@ -175,26 +175,36 @@
                 fields: ['name', 'geometry', 'place_id'],
             };
 
-            service.findPlaceFromQuery(request, function(results, status) {
+            service.findPlaceFromQuery(request, function (results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     clearMarkers();
                     const sidebar = document.getElementById('sidebar');
                     sidebar.innerHTML = ''; // Clear previous results
-                    results.forEach(function(place) {
-                        if (place.geometry && place.geometry.location) {
-                            addMarker(place);
-                            getPlaceDetails(place.place_id, true);
-                        }
-                    });
+
+                    // Check if we have results
                     if (results.length > 0) {
-                        map.setCenter(results.geometry.location);
+                        results.forEach(function (place) {
+                            if (place.geometry && place.geometry.location) {
+                                addMarker(place);
+                                getPlaceDetails(place.place_id, true);
+                            }
+                        });
+
+                        // Center the map on the first result's location
+                        const firstResultLocation = results[0].geometry.location;
+                        map.setCenter(firstResultLocation);
                         map.setZoom(15);
+                    } else {
+                        alert('No places found for the given query.');
                     }
                 } else {
-                    alert('Place not found');
+                    console.error("Error in Places API request:", status);
+                    alert('Place not found. Please try a different query.');
                 }
+
             });
-        }
+}
+
 
         function searchNearby(location, radius, minRating) {
 
@@ -238,9 +248,9 @@
         function getPlaceDetails(placeId, append = false) {
             const request = {
                 placeId: placeId,
-                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos']
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos', 'url', 'place_id']
             };
-            service.getDetails(request, function(place, status) {
+            service.getDetails(request, function(place, status, request) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     showDetails(place, append);
                 } else {
@@ -248,9 +258,6 @@
                 }
             });
         }
-
-
-
 
 
 
@@ -360,14 +367,58 @@
             } else {
                 sidebar.innerHTML += placeDetails;
             }
-        }
 
-        function clearMarkers() {
-            for (let i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-            }
-            markers = [];
+          console.log(place);
+    const saveButton = placeDetails.querySelector('.save-button');
+    saveButton.addEventListener('click', function() {
+        savee(place.place_id);  // Ensure placeId is passed correctly
+    });
+
         }
+        function savee(place,) {
+    {#const placeId = place#}
+    {#        if (!placeId) {#}
+    {#    console.error("placeId is undefined or null");#}
+    {#    return; // Exit if placeId is not valid#}
+
+    fetch(`/save_restaurant/${place}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'), // Include the CSRF token for security
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        console.log(response);
+        if (response.ok) {
+            alert('Restaurant saved successfully!');
+        } else {
+            alert('Error saving the restaurant.');
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function clearMarkers() {
+    for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+    }
+    markers = [];
+}
+
     </script>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>
