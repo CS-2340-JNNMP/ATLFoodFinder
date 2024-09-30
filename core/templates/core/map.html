@@ -348,7 +348,7 @@
                     <h2>${place.name}</h2>
                     <p><strong>Address:</strong> ${place.formatted_address}</p>
                     <p><strong>Rating:</strong> ${place.rating}</p>
-                    <p><strong>Business Status:</strong> ${place.business_status}</p>
+                    <p><strong>Business Status:</strong> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"}</p>
                     <p><strong>Types:</strong> ${place.types.join(', ')}</p>
                     <p> <a href="${place.website}" target="_blank"><strong>Visit Website</strong></a></p>
                     ${placeReviews}
