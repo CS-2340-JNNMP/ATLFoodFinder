@@ -97,21 +97,30 @@
                     clearMarkers();
                     const sidebar = document.getElementById('sidebar');
                     sidebar.innerHTML = ''; // Clear previous results
-                    results.forEach(function(place) {
-                        if (place.geometry && place.geometry.location) {
-                            addMarker(place);
-                            getPlaceDetails(place.place_id, true);
-                        }
-                    });
+
+                    // Check if we have results
                     if (results.length > 0) {
-                        map.setCenter(results.geometry.location);
+                        results.forEach(function(place) {
+                            if (place.geometry && place.geometry.location) {
+                                addMarker(place);
+                                getPlaceDetails(place.place_id, true);
+                            }
+                        });
+
+                        // Center the map on the first result's location
+                        const firstResultLocation = results[0].geometry.location;
+                        map.setCenter(firstResultLocation);
                         map.setZoom(15);
+                    } else {
+                        alert('No places found for the given query.');
                     }
                 } else {
-                    alert('Place not found');
+                    console.error("Error in Places API request:", status);
+                    alert('Place not found. Please try a different query.');
                 }
             });
-        }
+}
+
 
         function searchNearby(location, radius, minRating) {
 
@@ -186,12 +195,20 @@
                sidebar.innerHTML = '';
         sidebar.appendChild(placeDetails);
             }
-            const saveButton = placeDetails.querySelector('#save-button');
-    saveButton.addEventListener('click', savee, place);
+
+    const saveButton = placeDetails.querySelector('.save-button');
+    saveButton.addEventListener('click', function() {
+        const placeId = this.getAttribute('data-place-id');
+        savee(placeId);  // Ensure placeId is passed correctly
+    });
 
         }
         function savee(place) {
     const placeId = place
+            if (!placeId) {
+        console.error("placeId is undefined or null");
+        return; // Exit if placeId is not valid
+    }
     fetch(`/save_restaurant/${placeId}/`, {
         method: 'POST',
         headers: {

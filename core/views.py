@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import Restaurant, SavedRestaurant
 import requests
 # Create your views here.
@@ -65,6 +67,7 @@ def contact(request):
 
 
 @login_required
+@csrf_exempt
 def save_restaurant(request, place_id):
     if request.method == 'POST':
         # Retrieve restaurant details from Google Places API
