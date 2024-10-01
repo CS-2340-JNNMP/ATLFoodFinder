@@ -60,7 +60,7 @@
             max-height: 100vh;
             width: 100%;
             overflow-y: auto;
-            scroll
+
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -348,31 +348,35 @@
             if (photos && photos.length > 0) {
                 carousel(photos);
             }
-
-            const placeDetails = `
+            const placeDetails = document.createElement('div');
+            placeDetails.innerHTML = `
                 <div>
                     {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
                     <h2>${place.name}</h2>
                     <p><strong>Address:</strong> ${place.formatted_address}</p>
+                    <button id="save-button" class="save-button">Save</button>
                     <p><strong>Rating:</strong> ${place.rating}</p>
                     <p><strong>Business Status:</strong> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"}</p>
                     <p><strong>Types:</strong> ${place.types.join(', ')}</p>
                     <p> <a href="${place.website}" target="_blank"><strong>Visit Website</strong></a></p>
+
                     ${placeReviews}
                 </div>
             `;
 
             if (append) {
-                sidebar.innerHTML += placeDetails;
+                sidebar.appendChild(placeDetails);
             } else {
-                sidebar.innerHTML += placeDetails;
+                sidebar.innerHTML = placeDetails;
+               sidebar.innerHTML = '';
+                sidebar.appendChild(placeDetails);
             }
 
           console.log(place);
-    const saveButton = placeDetails.querySelector('.save-button');
-    saveButton.addEventListener('click', function() {
-        savee(place.place_id);  // Ensure placeId is passed correctly
-    });
+          const saveButton = placeDetails.querySelector('.save-button');
+          saveButton.addEventListener('click', function() {
+          savee(place.place_id);  // Ensure placeId is passed correctly
+        });
 
         }
         function savee(place,) {
