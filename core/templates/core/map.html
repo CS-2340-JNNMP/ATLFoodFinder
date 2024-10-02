@@ -80,10 +80,14 @@
         }
     </style>
 </head>
-<body>
-    <div id="top-section">
+<body> <div id="top-section">
         <div>
             <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; font-size: 14px;">
+            <select id="search-type" style="padding: 10px; font-size: 14px;">
+                <option value="name">Name</option>
+                 <option value="name">Cuisine</option>
+                <option value="address">Address</option>
+            </select>
             <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
             <div style="margin-top: 10px;">
                 <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
@@ -98,7 +102,6 @@
         <div id="sidebar" style="display: none"></div>
         <div id="map"></div>
     </div>
-
     <script>
         let map;
         let service;
@@ -107,11 +110,7 @@
         let currentPhoto;
         let photoIndex = 0;
 
-        function search(ele) {
-            if(event.key === 'Enter') {
-                searchPlaces(document.getElementById('search-bar').value);
-            }
-        }
+
 
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
@@ -136,9 +135,13 @@
 
             autocomplete.setFields(["place_id", "geometry", "name"]);
 
-            autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-            });
+           autocomplete.addListener('place_changed', function() {
+    const place = autocomplete.getPlace();
+    if (place && place.place_id) {
+        getPlaceDetails(place.place_id);
+    }
+});
+
 
             map = new google.maps.Map(document.getElementById('map'), {
                 center: userLocation,
@@ -163,7 +166,12 @@
 
             document.getElementById('search-button').addEventListener('click', function() {
                 const query = document.getElementById('search-bar').value;
-                searchPlaces(query);
+                const searchType = document.getElementById('search-type').value;
+                if (searchType === 'name' || searchType === 'cuisine') {
+                    searchPlaces(query); // Call searchPlaces for name or cuisine
+                } else if (searchType === 'address') {
+                    searchPlacesByAddress(query); // Call searchPlacesByAddress for address
+                }
             });
 
             document.getElementById('filterButton').addEventListener('click', function() {
@@ -173,46 +181,100 @@
             });
         }
 
+function searchPlaces(query) {
+    const request = {
+        query: query,
+        fields: ['name', 'formatted_address', 'geometry', 'place_id'],
+    };
+
+    service.textSearch(request, function(results, status) {
+        console.log('Search Status:', status); // Log the search status
+        console.log('Search Results:', JSON.stringify(results, null, 2)); // Log detailed results
+
+        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+            clearMarkers();
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = ''; // Clear previous results
+
+            results.forEach(function(place) {
+                if (place.geometry && place.geometry.location) {
+                    addMarker(place);
+                    getPlaceDetails(place.place_id, true);
+
+                    // Display the name and address in the sidebar
+                    const placeElement = document.createElement('div');
+                    placeElement.textContent = `${place.name} - ${place.formatted_address}`;
+                    sidebar.appendChild(placeElement);
+                } else {
+                    console.warn('Place does not have geometry:', place);
+                }
+            });
+
+            if (results.geometry && results.geometry.location) {
+                map.setCenter(results.geometry.location);
+                map.setZoom(15);
+            } else {
+                console.warn('No valid location found to center the map.');
+            }
+        } else {
+            console.error('Error with place search:', status); // Log error status
+            alert('Place not found: ' + status);
+        }
+    });
+}
+function searchPlacesByAddress(inputAddress) {
+    const geocoder = new google.maps.Geocoder();
 
 
+    geocoder.geocode({ address: inputAddress }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+            const addressLocation = results[0].geometry.location; // Fix: Access the geometry correctly
 
 
-
-
-        function searchPlaces(query) {
             const request = {
-                query: query,
-                fields: ['name', 'geometry', 'place_id'],
+                location: addressLocation,
+                radius: 10,
+                type: ['restaurant']
             };
 
-            service.findPlaceFromQuery(request, function (results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            clearMarkers();
+
+            service.nearbySearch(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
                     clearMarkers();
-                    const sidebar = document.getElementById('sidebar');
-                    sidebar.innerHTML = ''; // Clear previous results
 
-                    // Check if we have results
-                    if (results.length > 0) {
-                        results.forEach(function (place) {
-                            if (place.geometry && place.geometry.location) {
-                                addMarker(place);
-                                getPlaceDetails(place.place_id, true);
-                            }
-                        });
+                    // Add markers for results and display them
+                    results.forEach(function(place) {
+                        if (place.geometry && place.geometry.location) {
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
 
-                        // Center the map on the first result's location
-                        const firstResultLocation = results[0].geometry.location;
-                        map.setCenter(firstResultLocation);
+                            // Display the name and address in the sidebar
+                            const placeElement = document.createElement('div');
+                            placeElement.textContent = `${place.name} - ${place.formatted_address}`;
+                            document.getElementById('sidebar').appendChild(placeElement);
+                        }
+                    });
+
+                    // Center the map on the first result
+                    if (results[0].geometry && results[0].geometry.location) {
+                        map.setCenter(results[0].geometry.location); // Fix: Use the correct geometry
                         map.setZoom(15);
                     } else {
-                        alert('No places found for the given query.');
+                        console.warn('No valid location found to center the map.');
                     }
                 } else {
-                    console.error("Error in Places API request:", status);
-                    alert('Place not found. Please try a different query.');
+                    console.error('Error with nearby search:', status); // Log error status
+                    alert('No places found: ' + status);
                 }
 
             });
+        } else {
+            console.error('Geocoding failed:', status); // Log error status
+            alert('Geocoding failed: ' + status);
+        }
+    });
+
 }
 
 
@@ -255,6 +317,7 @@
             });
         }
 
+
         function getPlaceDetails(placeId, append = false) {
             const request = {
                 placeId: placeId,
@@ -268,7 +331,6 @@
                 }
             });
         }
-
 
 
         function nextPhoto() {
