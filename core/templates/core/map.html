@@ -25,9 +25,7 @@
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            {#background-color: yellow;#}
-            {#outline-color: red;#}
-            outline-width: thick;
+            background-color: darkgray;
         }
         @media (max-width: 1300px) {
             #bottom-section {
@@ -49,6 +47,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             outline-color: red;
             outline-width: thick;
+            padding-bottom: 4vh;
         }
         #bottom-section {
             display: flex;
@@ -82,19 +81,19 @@
 </head>
 <body> <div id="top-section">
         <div>
-            <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; font-size: 14px;">
-            <select id="search-type" style="padding: 10px; font-size: 14px;">
-                <option value="name">Name</option>
-                 <option value="name">Cuisine</option>
-                <option value="address">Address</option>
+            <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; border-radius: 10px; font-size: 14px;">
+            <select id="search-type" style="padding: 10px; font-size: 14px; border-radius: 10px;">
+                <option style="border-radius: 10px; padding: 10px" value="name">Name</option>
+                 <option style="border-radius: 10px; padding: 10px" value="name">Cuisine</option>
+                <option style="border-radius: 10px; padding: 10px" value="address">Address</option>
             </select>
-            <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
+            <button id="search-button" style="border-radius: 10px; padding: 10px; font-size: 14px;">Search</button>
             <div style="margin-top: 10px;">
-                <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
-                <input type="number" id="radiusInput"  style="font-size: 12px;">
-                <label for="ratingInput" style="font-size: 14px;">Minimum Rating:</label>
-                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="font-size: 12px;">
-                <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
+                <label for="radiusInput" style="font-size: 18px;">Radius (miles):</label>
+                <input type="number" id="radiusInput"  style="border-radius: 10px; padding: 10px; font-size: 12px;">
+                <label for="ratingInput" style="font-size: 18px;">Minimum Rating:</label>
+                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="border-radius: 10px; padding: 10px; font-size: 12px;">
+                <button id="filterButton" style="border-radius: 10px; padding: 10px; font-size: 14px;">Filter</button>
             </div>
         </div>
     </div>
@@ -424,12 +423,12 @@ function searchPlacesByAddress(inputAddress) {
             let placeReviews = '';
 
             if (place.reviews && place.reviews.length > 0) {
-                placeReviews += '<h3>Reviews:</h3><ul>';
+                placeReviews += '<h3 style="margin-top: 3vh">Reviews:</styleh3><ul style="align-content: center; align-items: center; align-self: center; justify-content: center; margin: 0; padding: 0;">';
                 place.reviews.forEach(review => {
                     placeReviews += `
-                            <p><strong>${review.author_name}:</strong> ${review.rating} stars</p>
-                            <p><em>${review.relative_time_description}</em></p>
-                            <div><p>${review.text}</p></div>
+                            <p><strong>${review.author_name}:</strong> <br> ${review.rating} stars</p>
+                            <p style="margin-top: 1vh; align-self: center; justify-self: center; font-size: large" em>${review.relative_time_description}</em></p>
+                            <div style="align-self: center; justify-self: center; font-size: medium; margin-bottom: 6vh">${review.text}</p></div>
                     `;
                 });
                 placeReviews += '</ul>';
@@ -451,12 +450,12 @@ function searchPlacesByAddress(inputAddress) {
             const placeDetails = `
                 <div>
                     {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
-                    <h2>${place.name}</h2>
-                    <p><strong>Address:</strong> ${place.formatted_address}</p>
-                    <button id="save-button" class="save-button">Save</button>
-                    <p><strong>Rating:</strong> ${place.rating}</p>
-                    <p><strong>Business Status:</strong> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"}</p>
-                    <p><strong>Types:</strong> ${place.types.join(', ')}</p>
+                    <h2 style="font-size: x-large">${place.name}</h2>
+                    <p style="font-size: x-large"><strong>Address:</strong> <br> <div style="margin-top: .5vh; font-size: medium">  ${place.formatted_address} </div> </p>
+                    <button style="padding: 10px; border-radius: 15px; font-size: medium" id="save-button" class="save-button">Save</button>
+                    <p><strong>Rating:</strong> <br> <div style="margin-top: .5vh; font-size: large"> ${place.rating} </div> </p>
+                    <p><strong>Business Status:</strong> <br> <div style="margin-top: 1vh; font-size: large"> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"} </div> </p>
+                    <p><strong>Types:</strong> <br> <div style="margin-top: 1vh; font-size: medium"> ${place.types.join(', ')}</p> </div>
                     <p> <a href="${place.website}" target="_blank"><strong>Visit Website</strong></a></p>
 
                     ${placeReviews}
