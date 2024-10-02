@@ -156,7 +156,12 @@
 
             document.getElementById('search-button').addEventListener('click', function() {
                 const query = document.getElementById('search-bar').value;
-                searchPlaces(query);
+                const searchType = document.getElementById('search-type').value;
+                if (searchType === 'name' || searchType === 'cuisine') {
+                    searchPlaces(query); // Call searchPlaces for name or cuisine
+                } else if (searchType === 'address') {
+                    searchPlacesByAddress(query); // Call searchPlacesByAddress for address
+                }
             });
 
             document.getElementById('filterButton').addEventListener('click', function() {
@@ -194,7 +199,7 @@ function searchPlaces(query) {
                     console.warn('Place does not have geometry:', place);
                 }
             });
-            // Center the map on the first result
+
             if (results.geometry && results.geometry.location) {
                 map.setCenter(results.geometry.location);
                 map.setZoom(15);
@@ -210,16 +215,16 @@ function searchPlaces(query) {
 function searchPlacesByAddress(inputAddress) {
     const geocoder = new google.maps.Geocoder();
 
-    // Geocode the input address to get its location
+
     geocoder.geocode({ address: inputAddress }, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-            const addressLocation = results.geometry.location;
+            const addressLocation = results[0].geometry.location; // Fix: Access the geometry correctly
 
-            // Now search for nearby places
+
             const request = {
                 location: addressLocation,
-                radius: 5000, // Set a default radius
-                type: ['restaurant'] // You can change this to any place type you need
+                radius: 10,
+                type: ['restaurant']
             };
 
             clearMarkers();
@@ -242,8 +247,8 @@ function searchPlacesByAddress(inputAddress) {
                     });
 
                     // Center the map on the first result
-                    if (results.geometry && results.geometry.location) {
-                        map.setCenter(results.geometry.location);
+                    if (results[0].geometry && results[0].geometry.location) {
+                        map.setCenter(results[0].geometry.location); // Fix: Use the correct geometry
                         map.setZoom(15);
                     } else {
                         console.warn('No valid location found to center the map.');
