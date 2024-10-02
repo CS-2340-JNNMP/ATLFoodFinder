@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+
 
 from .models import Restaurant, SavedRestaurant
 import requests
@@ -76,13 +79,20 @@ def save_restaurant(request, place_id):
         response = requests.get(url)
         details = response.json().get('result', {})
 
+        photo_reference = details.get('photos', [{}])[0].get('photo_reference') if details.get('photos') else None
+        photo_url = None
+        if photo_reference:
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"
 
         restaurant, created = Restaurant.objects.get_or_create(
             place_id=details.get('place_id'),
             defaults={
+                'image': photo_url,
                 'name': details.get('name'),
                 'address': details.get('formatted_address'),
-                'rating': details.get('rating')
+                'rating': details.get('rating'),
+
+
             }
         )
 
@@ -96,22 +106,10 @@ def saved_restaurants(request):
     saved_restaurants = SavedRestaurant.objects.filter(user=request.user)
     return render(request, 'core/savedRestaurant.html', {'saved_restaurants': saved_restaurants})
 
-    # def saved_restaurants(request):
-#     restaurants = Restaurant.objects.all()
-#     return render(request, 'core/profile.html', {'restaurants': restaurants})
-#
-#
-# def save_restaurant(request, place_id):
-#     url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'}"
-#
-#     response = requests.get(url)
-#     details = response.json().get('result', {})
-#
-#     # Assuming you have a Restaurant model
-#     Restaurant.objects.create(
-#         name=details.get('name'),
-#         address=details.get('formatted_address'),
-#         rating=details.get('rating'),
-#         place_id=details.get('place_id'),
-#     )
-
+def unsave_restaurant(request, place_id):
+    if request.method == 'POST':
+        # Retrieve and delete the saved restaurant
+        saved_restaurant = get_object_or_404(SavedRestaurant, restaurant__place_id=place_id)
+        saved_restaurant.delete()
+        return JsonResponse({'success': True, 'message': 'Restaurant removed successfully.'})
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})

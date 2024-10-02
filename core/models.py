@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Restaurant(models.Model):
+    image = models.URLField(max_length=500, blank=True, null=True)
     name = models.CharField(max_length=255)
     address = models.TextField()
     rating = models.FloatField(null=True, blank=True)
