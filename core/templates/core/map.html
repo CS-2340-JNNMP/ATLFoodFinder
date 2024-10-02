@@ -70,10 +70,14 @@
         }
     </style>
 </head>
-<body>
-    <div id="top-section">
+<body> <div id="top-section">
         <div>
             <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; font-size: 14px;">
+            <select id="search-type" style="padding: 10px; font-size: 14px;">
+                <option value="name">Name</option>
+                 <option value="name">Cuisine</option>
+                <option value="address">Address</option>
+            </select>
             <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
             <div style="margin-top: 10px;">
                 <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
@@ -88,7 +92,6 @@
         <div id="sidebar" style="display: none"></div>
         <div id="map"></div>
     </div>
-
     <script>
         let map;
         let service;
@@ -97,11 +100,7 @@
         let currentPhoto;
         let photoIndex = 0;
 
-        function search(ele) {
-            if(event.key === 'Enter') {
-                searchPlaces(document.getElementById('search-bar').value);
-            }
-        }
+
 
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
@@ -126,9 +125,13 @@
 
             autocomplete.setFields(["place_id", "geometry", "name"]);
 
-            autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-            });
+           autocomplete.addListener('place_changed', function() {
+    const place = autocomplete.getPlace();
+    if (place && place.place_id) {
+        getPlaceDetails(place.place_id);
+    }
+});
+
 
             map = new google.maps.Map(document.getElementById('map'), {
                 center: userLocation,
@@ -163,38 +166,100 @@
             });
         }
 
+function searchPlaces(query) {
+    const request = {
+        query: query,
+        fields: ['name', 'formatted_address', 'geometry', 'place_id'],
+    };
 
+    service.textSearch(request, function(results, status) {
+        console.log('Search Status:', status); // Log the search status
+        console.log('Search Results:', JSON.stringify(results, null, 2)); // Log detailed results
 
+        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+            clearMarkers();
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = ''; // Clear previous results
 
+            results.forEach(function(place) {
+                if (place.geometry && place.geometry.location) {
+                    addMarker(place);
+                    getPlaceDetails(place.place_id, true);
 
+                    // Display the name and address in the sidebar
+                    const placeElement = document.createElement('div');
+                    placeElement.textContent = `${place.name} - ${place.formatted_address}`;
+                    sidebar.appendChild(placeElement);
+                } else {
+                    console.warn('Place does not have geometry:', place);
+                }
+            });
+            // Center the map on the first result
+            if (results.geometry && results.geometry.location) {
+                map.setCenter(results.geometry.location);
+                map.setZoom(15);
+            } else {
+                console.warn('No valid location found to center the map.');
+            }
+        } else {
+            console.error('Error with place search:', status); // Log error status
+            alert('Place not found: ' + status);
+        }
+    });
+}
+function searchPlacesByAddress(inputAddress) {
+    const geocoder = new google.maps.Geocoder();
 
+    // Geocode the input address to get its location
+    geocoder.geocode({ address: inputAddress }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+            const addressLocation = results.geometry.location;
 
-        function searchPlaces(query) {
+            // Now search for nearby places
             const request = {
-                query: query,
-                fields: ['name', 'geometry', 'place_id'],
+                location: addressLocation,
+                radius: 5000, // Set a default radius
+                type: ['restaurant'] // You can change this to any place type you need
             };
 
-            service.findPlaceFromQuery(request, function(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            clearMarkers();
+
+            service.nearbySearch(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
                     clearMarkers();
-                    const sidebar = document.getElementById('sidebar');
-                    sidebar.innerHTML = ''; // Clear previous results
+
+                    // Add markers for results and display them
                     results.forEach(function(place) {
                         if (place.geometry && place.geometry.location) {
                             addMarker(place);
                             getPlaceDetails(place.place_id, true);
+
+                            // Display the name and address in the sidebar
+                            const placeElement = document.createElement('div');
+                            placeElement.textContent = `${place.name} - ${place.formatted_address}`;
+                            document.getElementById('sidebar').appendChild(placeElement);
                         }
                     });
-                    if (results.length > 0) {
+
+                    // Center the map on the first result
+                    if (results.geometry && results.geometry.location) {
                         map.setCenter(results.geometry.location);
                         map.setZoom(15);
+                    } else {
+                        console.warn('No valid location found to center the map.');
                     }
                 } else {
-                    alert('Place not found');
+                    console.error('Error with nearby search:', status); // Log error status
+                    alert('No places found: ' + status);
                 }
             });
+        } else {
+            console.error('Geocoding failed:', status); // Log error status
+            alert('Geocoding failed: ' + status);
         }
+    });
+}
+
 
         function searchNearby(location, radius, minRating) {
 
@@ -234,20 +299,25 @@
                 getPlaceDetails(place.place_id);
             });
         }
+function getPlaceDetails(placeId, append = false) {
+    const request = {
+        placeId: placeId,
+        fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos'],
+    };
 
-        function getPlaceDetails(placeId, append = false) {
-            const request = {
-                placeId: placeId,
-                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos']
-            };
-            service.getDetails(request, function(place, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    showDetails(place, append);
-                } else {
-                    alert('Details not found');
-                }
-            });
-        }
+    service.getDetails(request, function(place, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+        console.log(place); // Log the place object for debugging
+        showDetails(place, append);
+    } else {
+        console.error('Details not found: ', status);
+        alert('Details not found: ' + status);
+    }
+});
+
+
+}
+
 
 
 

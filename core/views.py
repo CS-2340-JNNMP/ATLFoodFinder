@@ -58,3 +58,62 @@ def profile(request):
 
 def contact(request):
     return render(request, "core/contact.html")
+
+
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+# Replace with your own API key
+API_KEY = 'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'
+
+
+def search_address(request):
+    if request.method == 'POST':
+        address = request.POST.get('address')
+        if address:
+            place_details = get_place_details_by_address(address)
+            return JsonResponse(place_details)
+        else:
+            return JsonResponse({'error': 'No address provided'}, status=400)
+    return render(request, 'your_template.html')
+
+
+def get_place_details_by_address(address):
+    endpoint = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+    params = {
+        'input': address,
+        'inputtype': 'textquery',
+        'fields': 'place_id,formatted_address,name,geometry',
+        'key': API_KEY
+    }
+
+    response = requests.get(endpoint, params=params)
+    result = response.json()
+
+    if result['status'] == 'OK' and result['candidates']:
+        place = result['candidates'][0]  # Taking the first candidate result
+        place_id = place.get('place_id')
+
+        # Fetch more details using place_id if required
+        detailed_place_info = get_detailed_place_info(place_id)
+        return detailed_place_info
+    else:
+        return {'error': 'Place not found'}
+
+
+def get_detailed_place_info(place_id):
+    endpoint = f"https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        'place_id': place_id,
+        'fields': 'name,rating,formatted_address,business_status,types,website,reviews,photos',
+        'key': API_KEY
+    }
+
+    response = requests.get(endpoint, params=params)
+    place_details = response.json()
+
+    if place_details['status'] == 'OK':
+        return place_details['result']
+    else:
+        return {'error': 'Failed to retrieve place details'}
