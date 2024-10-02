@@ -137,20 +137,6 @@
                 zoom: 13
             });
 
-            map.addListener('click', function(event) {
-                const latLng = event.latLng;
-
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ location: latLng }, function(results, status) {
-                    if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-                        const query = results[0].formatted_address;
-                        searchPlaces(query);
-                    } else {
-                        alert('No nearby place found.');
-                    }
-                });
-            });
-
             service = new google.maps.places.PlacesService(map);
 
             document.getElementById('search-button').addEventListener('click', function() {
@@ -163,7 +149,56 @@
                 const minRating = parseFloat(document.getElementById('ratingInput').value);
                 searchNearby(userLocation, radius, minRating);
             });
+
+            new ClickEventHandler(map, userLocation);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+            function isIconMouseEvent(e) {
+              return "placeId" in e;
+            }
+
+            class ClickEventHandler {
+              origin;
+              map;
+              placesService;
+              constructor(map, origin) {
+                this.origin = origin;
+                this.map = map;
+                this.placesService = new google.maps.places.PlacesService(map);
+                this.map.addListener("click", this.handleClick.bind(this));
+              }
+              handleClick(event) {
+                if (isIconMouseEvent(event)) {
+                  console.log("You clicked on place:" + event.placeId);
+                  event.stop();
+                  if (event.placeId) {
+                    this.getPlaceInformation(event.placeId);
+                  }
+                }
+              }
+              getPlaceInformation(placeId) {
+                const me = this;
+
+                this.placesService.getDetails({ placeId: placeId }, (place, status) => {
+                    showDetails(place);
+                });
+              }
+            }
+
+
+
+
 
 
 
@@ -350,8 +385,7 @@
             if (photos && photos.length > 0) {
                 carousel(photos);
             }
-            const placeDetails = document.createElement('div');
-            placeDetails.innerHTML = `
+            let placeDetails = `
                 <div>
                     {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
                     <h2>${place.name}</h2>
@@ -366,13 +400,7 @@
                 </div>
             `;
 
-            if (append) {
-                sidebar.appendChild(placeDetails);
-            } else {
-                sidebar.innerHTML = placeDetails;
-               sidebar.innerHTML = '';
-                sidebar.appendChild(placeDetails);
-            }
+            sidebar.innerHTML += placeDetails;
 
           console.log(place);
           const saveButton = placeDetails.querySelector('.save-button');
