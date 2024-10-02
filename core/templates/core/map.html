@@ -25,8 +25,8 @@
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            background-color: yellow;
-            outline-color: red;
+            {#background-color: yellow;#}
+            {#outline-color: red;#}
             outline-width: thick;
         }
         @media (max-width: 1300px) {
@@ -110,7 +110,11 @@
         let currentPhoto;
         let photoIndex = 0;
 
-
+        function search(ele) {
+            if(event.key === 'Enter') {
+                searchPlaces(document.getElementById('search-bar').value);
+            }
+        }
 
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
@@ -136,11 +140,11 @@
             autocomplete.setFields(["place_id", "geometry", "name"]);
 
            autocomplete.addListener('place_changed', function() {
-    const place = autocomplete.getPlace();
-    if (place && place.place_id) {
-        getPlaceDetails(place.place_id);
-    }
-});
+                const place = autocomplete.getPlace();
+                if (place && place.place_id) {
+                    getPlaceDetails(place.place_id);
+                }
+            });
 
 
             map = new google.maps.Map(document.getElementById('map'), {
@@ -168,8 +172,8 @@
 
             new ClickEventHandler(map, userLocation);
         }
-      
-      
+
+
        function isIconMouseEvent(e) {
           return "placeId" in e;
         }
@@ -197,6 +201,8 @@
             const me = this;
 
             this.placesService.getDetails({ placeId: placeId }, (place, status) => {
+                clearMarkers();
+                addMarker(place);
                 showDetails(place);
             });
           }
@@ -442,8 +448,7 @@ function searchPlacesByAddress(inputAddress) {
             if (photos && photos.length > 0) {
                 carousel(photos);
             }
-            const placeDetails = document.createElement('div');
-            placeDetails.innerHTML = `
+            const placeDetails = `
                 <div>
                     {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
                     <h2>${place.name}</h2>
@@ -459,11 +464,9 @@ function searchPlacesByAddress(inputAddress) {
             `;
 
             if (append) {
-                sidebar.appendChild(placeDetails);
+                sidebar.innerHTML += placeDetails;
             } else {
-                sidebar.innerHTML = placeDetails;
-               sidebar.innerHTML = '';
-                sidebar.appendChild(placeDetails);
+                sidebar.innerHTML += placeDetails;
             }
 
           console.log(place);
