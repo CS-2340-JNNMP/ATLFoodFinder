@@ -469,7 +469,7 @@ function searchPlacesByAddress(inputAddress) {
             }
 
           console.log(place);
-          const saveButton = placeDetails.querySelector('.save-button');
+          const saveButton = document.getElementById('save-button');
           saveButton.addEventListener('click', function() {
           savee(place.place_id);  // Ensure placeId is passed correctly
         });
