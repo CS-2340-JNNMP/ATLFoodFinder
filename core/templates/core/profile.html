@@ -11,5 +11,6 @@
         <!-- Display the username -->
         <h2 style="margin-top: 20px;">{{ user.username }}</h2>
         <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'saved_restaurants' %}">View Saved Restaurants!</a>
     </div>
 {% endblock %}
