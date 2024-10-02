@@ -13,7 +13,7 @@ body {
     flex-direction: column;
     /*background-image: url("https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp");*/
 
-    background-image: url('../core/images/NiceRestaurant2.jpeg');
+    background-image: url('../core/images/NiceRestaruant.jpeg');
 
     background-repeat: no-repeat;
     background-size: cover;
@@ -176,6 +176,35 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     left: 0;  /* Move the sidebar into view */
 }
 
+.form-styles {
+    padding-top: .6vh;
+    padding-bottom: .6vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    border-radius: 1vh;
+
+}
+
+.helptext {
+    display: None;
+}
+
+.register-form ul {
+    display: None;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: .7vh;
+    font-size: x-large;
+    color: #3e3d3b;
+}
+
+.register-form {
+    display: block;
+    flex-direction: column;
+}
+=======
 footer {
     background-color: #3e3d3b;
     color: white;
@@ -210,4 +239,3 @@ footer {
 .footer-links a:hover {
     color: #ddd;
 }
-
