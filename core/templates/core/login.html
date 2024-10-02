@@ -23,12 +23,11 @@
         }
 
         #loginBackground {
-            background-image: url("{% static 'core/login2.jpeg' %}");
+            background-image: url("{% static 'core/finalLogin.jpeg' %}");
             background-size: cover;
             background-position: center;
             height: 100vh;
             width: 100vw;
-            margin: 0;
             padding: 0;
             display: flex; /* Enable flexbox */
             justify-content: center; /* Center horizontally */
@@ -67,15 +66,14 @@
         #whiteForm {
             flex: .25;
             height: 40vh;
-            margin-top: 8vh;
+            margin-top: 20vh;
             display: flex;
             flex-direction: column; /* Stack elements vertically inside the form */
             padding: 20px; /* Optional: Add padding inside the form */
             border-radius: 25px;
             z-index: 2;
             align-content: center;
-            outline-color: yellow;
-            outline-width: thick;
+            margin-right: 3vh;
         }
         a {
             padding-top: 10px;
@@ -86,7 +84,7 @@
 
     <div id="loginBackground">
     <div id="whiteForm" style="">
-<h1 style="margin-bottom: 5vh; color: #3e3d3b; font-size: xxx-large">Welcome Back!</h1>
+<h1 style="margin-bottom: 3vh; color: #3e3d3b; font-size: xx-large">Welcome Back!</h1>
     <div style="outline-color: purple; outline-width: thick" class="container">
             {% if messages %}
                 {% for message in messages %}
@@ -96,17 +94,17 @@
         </div>
 <form action="" method="POST">
     {% csrf_token %}
-    <div class="mb-3" style="justify-content: center; flex-direction: column; margin-bottom: 4vh">
-        <label style="color: #3e3d3b; font-size: xx-large" for="exampleInputEmail1" class="form-label">Username:</label>
+    <div class="mb-3" style="justify-content: center; flex-direction: column; margin-bottom: 2vh">
+        <label style="color: #3e3d3b; font-size: x-large" for="exampleInputEmail1" class="form-label">Username:</label>
         <div style="margin-bottom: 1vh"></div>
         <input style="padding: 1vh; border-radius: 10px" type="text" class="form-control" name="username" aria-describedby="emailHelp">
     </div>
-    <div class="mb-3" style="color: #3e3d3b; justify-content: center; flex-direction: column; margin-bottom: 6vh">
+    <div class="mb-3" style="color: #3e3d3b; justify-content: center; flex-direction: column; margin-bottom: 3vh">
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <div style="margin-bottom: 1vh"></div>
         <input style="padding: 1vh; border-radius: 10px" type="password" class="form-control" name="password">
     </div>
-    <input style="font-size:large; padding: 1vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">
+    <input style="font-size:medium; padding: .9vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">
 
     <a style="font-size: medium; color: #3e3d3b" href="/register_user">New here? Click to register!</a>
 </form>

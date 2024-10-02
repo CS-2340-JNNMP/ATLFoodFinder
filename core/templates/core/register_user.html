@@ -15,7 +15,7 @@
         }
 
         #registerBackground {
-            background-image: url("{% static 'core/register.jpeg' %}");
+            background-image: url("{% static 'core/finalLogin.jpeg' %}");
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -62,7 +62,7 @@
             padding: 20px;
             border-radius: 25px;
             z-index: 2;
-            margin-top: 15vh;
+            margin-top: 18vh;
         }
         form {
             font-size: small;
@@ -74,12 +74,12 @@
     {% endif %}
     <div id="registerBackground">
     <div id="whiteForm">
-<h1 style="margin-bottom: .5vh; color: #3e3d3b; font-size: xxx-large">Welcome!</h1>
+<h1 style="margin-bottom: .5vh; margin-right: 3vh; color: #3e3d3b; font-size: xx-large">Welcome!</h1>
 
 <form class="register-form" action="{% url 'register_user' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <input style="margin-top: 1.2vh; padding-left: 1.5vh; padding-right: 1.5vh; font-size:medium; padding-top: 1vh; padding-bottom: 1vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">
+    <input style="margin-top: .9vh; padding-left: 1.5vh; padding-right: 1.5vh; font-size:medium; padding-top: 1vh; padding-bottom: 1vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">
 </form>
     </div>
     </div>
