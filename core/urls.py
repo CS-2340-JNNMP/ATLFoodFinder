@@ -9,5 +9,4 @@ path('profile/', views.profile, name='profile'),
 path('save_restaurant/<str:place_id>/', views.save_restaurant, name='save_restaurant'),
     path('saved_restaurants/', views.saved_restaurants, name='saved_restaurants'),
     path('unsave_restaurant/<str:place_id>/', views.unsave_restaurant, name='unsave_restaurant'),
-
 ]
