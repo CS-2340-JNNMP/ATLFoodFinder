@@ -176,3 +176,31 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     left: 0;  /* Move the sidebar into view */
 }
 
+.form-styles {
+    padding-top: .6vh;
+    padding-bottom: .6vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    border-radius: 1vh;
+
+}
+
+.helptext {
+    display: None;
+}
+
+.register-form ul {
+    display: None;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: .7vh;
+    font-size: x-large;
+    color: #3e3d3b;
+}
+
+.register-form {
+    display: block;
+    flex-direction: column;
+}

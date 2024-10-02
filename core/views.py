@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -19,8 +20,6 @@ def login_user(request):
         if user is not None:
             login(request, user)  # Redirect to success page
             return redirect('profile')
-
-
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login')
@@ -31,9 +30,23 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'You have been logged out.')
     return redirect('index')
+
+
+class UserCreationFormWrapper(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationFormWrapper, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-styles'})
+
+
+
 def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreationFormWrapper(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -44,9 +57,9 @@ def register_user(request):
             return redirect('profile')
 
         else:
-            form=UserCreationForm()
+            form=UserCreationFormWrapper()
     else:
-        form = UserCreationForm()
+        form = UserCreationFormWrapper()
     return render(request, 'core/register_user.html', {'form' : form})
 def sign_up(request):
     return render(request, "core/sign_up.html")
