@@ -1,8 +1,7 @@
 {% extends 'core/base.html' %}
 {% load static %}
-
+<body style="background-color: darkgray; flex: 1; background-image: ">
 {% block title %}Profile{% endblock %}
-
 {% block content %}
     <div style="display: flex; flex-direction: column; align-items: center; margin-top: 50px;">
         <!-- Default Profile Picture -->
@@ -13,4 +12,5 @@
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'saved_restaurants' %}">View Saved Restaurants!</a>
     </div>
+    </body>
 {% endblock %}
