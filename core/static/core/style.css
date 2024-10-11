@@ -96,7 +96,7 @@ Should probably rename this. This styles the big words seen on every screen. The
 */
 #title {
     width: 100%;
-    font-size: xx-large;
+    font-size: x-large;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -134,9 +134,8 @@ Using it to align them to the left of the screen.
 Styles the "Get Started" button only found on the front page in the index.html file.
 */
 #map-button {
-    margin-bottom: 50vh;
-    font-size: x-large;
-    padding: 15px;
+    font-size: medium;
+    padding: 10px;
     background-color: white;
     color: black;
     text-decoration: none;
@@ -176,6 +175,41 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     left: 0;  /* Move the sidebar into view */
 }
 
+.form-styles {
+    padding-top: .6vh;
+    padding-bottom: .6vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    border-radius: 1vh;
+}
+
+.helptext {
+    align-self: center;
+    display: block;
+    align-items: center;
+    color: #3e3d3b;
+}
+
+.register-form ul {
+    align-self: center;
+    display: block;
+    color: #3e3d3b;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: .7vh;
+    font-size: large;
+    color: #3e3d3b;
+    align-self: center;
+    align-items: center;
+}
+
+.register-form {
+    display: block;
+    flex-direction: column;
+    margin-left: 3vh;
+}
 footer {
     background-color: #3e3d3b;
     color: white;
@@ -211,3 +245,7 @@ footer {
     color: #ddd;
 }
 
+.li {
+    margin: 0;
+    padding: 0;
+}
