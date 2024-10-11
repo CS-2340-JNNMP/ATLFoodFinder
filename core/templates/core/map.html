@@ -116,78 +116,79 @@
         }
 
         function initMap() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            const userLocation = { lat: 33.7490, lng: -84.3880 };
 
-                    const defaultBounds = {
-                      north: userLocation.lat + 0.1,
-                      south: userLocation.lat - 0.1,
-                      east: userLocation.lng + 0.1,
-                      west: userLocation.lng - 0.1,
-                    };
+            navigator.geolocation.getCurrentPosition(function(position) {
+                userLocation.lat = position.coords.latitude;
+                userLocation.lng = position.coords.longitude;
 
-                    const input = document.getElementById("search-bar");
-
-                    const options = {
-                      bounds: defaultBounds,
-                      componentRestrictions: { country: "us" },
-                      fields: ["address_components", "geometry", "icon", "name"],
-                      strictBounds: false,
-                    };
-
-                    const autocomplete = new google.maps.places.Autocomplete(input, options);
-
-                    autocomplete.setFields(["place_id", "geometry", "name"]);
-
-                    autocomplete.addListener('place_changed', function() {
-                        const place = autocomplete.getPlace();
-                        if (place && place.place_id) {
-                            getPlaceDetails(place.place_id);
-                        }
-                    });
-
-
-
-
-                    const map = new google.maps.Map(document.getElementById("map"), {
-                        zoom: 13,
-                        center: userLocation
-                    });
-
-                    const marker = new google.maps.Marker({
-                        position: userLocation,
-                        map: map
-                    });
-
-                    service = new google.maps.places.PlacesService(map);
-
-                    document.getElementById('search-button').addEventListener('click', function() {
-                        const query = document.getElementById('search-bar').value;
-                        const searchType = document.getElementById('search-type').value;
-                        if (searchType === 'name' || searchType === 'cuisine') {
-                            searchPlaces(query); // Call searchPlaces for name or cuisine
-                        } else if (searchType === 'address') {
-                            searchPlacesByAddress(query); // Call searchPlacesByAddress for address
-                        }
-                    });
-
-                    document.getElementById('filterButton').addEventListener('click', function() {
-                        const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
-                        const minRating = parseFloat(document.getElementById('ratingInput').value);
-                        searchNearby(userLocation, radius, minRating);
-                    });
-
-                    new ClickEventHandler(map, userLocation);
-
-
-                }, function() {
-                    handleLocationError(true, map.getCenter());
+                map.setCenter(userLocation);
+                const marker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map
                 });
-            }
+
+                markers.push(marker);
+                marker.addListener('click', function() {
+                    getPlaceDetails(place.place_id);
+                });
+            })
+
+
+
+            const defaultBounds = {
+              north: userLocation.lat + 0.1,
+              south: userLocation.lat - 0.1,
+              east: userLocation.lng + 0.1,
+              west: userLocation.lng - 0.1,
+            };
+
+            const input = document.getElementById("search-bar");
+
+            const options = {
+              bounds: defaultBounds,
+              componentRestrictions: { country: "us" },
+              fields: ["address_components", "geometry", "icon", "name"],
+              strictBounds: false,
+            };
+
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            autocomplete.setFields(["place_id", "geometry", "name"]);
+
+           autocomplete.addListener('place_changed', function() {
+                const place = autocomplete.getPlace();
+                if (place && place.place_id) {
+                    getPlaceDetails(place.place_id);
+                }
+            });
+
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: userLocation,
+                zoom: 13
+            });
+
+            service = new google.maps.places.PlacesService(map);
+
+            document.getElementById('search-button').addEventListener('click', function() {
+                const query = document.getElementById('search-bar').value;
+                const searchType = document.getElementById('search-type').value;
+                if (searchType === 'name' || searchType === 'cuisine') {
+                    searchPlaces(query); // Call searchPlaces for name or cuisine
+                } else if (searchType === 'address') {
+                    searchPlacesByAddress(query); // Call searchPlacesByAddress for address
+                }
+            });
+
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
+                const minRating = parseFloat(document.getElementById('ratingInput').value);
+                searchNearby(userLocation, radius, minRating);
+            });
+
+            new ClickEventHandler(map, userLocation);
+
         }
 
 
