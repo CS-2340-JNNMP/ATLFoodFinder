@@ -25,7 +25,6 @@
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            background-color: darkgray;
         }
         @media (max-width: 1300px) {
             #bottom-section {
@@ -45,20 +44,15 @@
             width: 100%;
             padding: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            outline-color: red;
-            outline-width: thick;
-            padding-bottom: 4vh;
         }
         #bottom-section {
             display: flex;
             flex-direction: row;
             height: 80%;
             width: 100%;
-            outline-color: purple;
-            outline-width: thick;
         }
         #map {
-            height: 104.2%;
+            height: 100%;
             width: 200%;
         }
         #sidebar {
@@ -67,11 +61,10 @@
             max-height: 100vh;
             width: 100%;
             overflow-y: auto;
+            scroll
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             -ms-overflow-style: none;
             scrollbar-width: none;
-            outline-color: aqua;
-            outline-width: thick;
         }
         #sidebar::-webkit-scrollbar {
           display: none;
@@ -79,21 +72,17 @@
         }
     </style>
 </head>
-<body> <div id="top-section">
+<body>
+    <div id="top-section">
         <div>
-            <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; border-radius: 10px; font-size: 14px;">
-            <select id="search-type" style="padding: 10px; font-size: 14px; border-radius: 10px;">
-                <option style="border-radius: 10px; padding: 10px" value="name">Name</option>
-                 <option style="border-radius: 10px; padding: 10px" value="name">Cuisine</option>
-                <option style="border-radius: 10px; padding: 10px" value="address">Address</option>
-            </select>
-            <button id="search-button" style="border-radius: 10px; padding: 10px; font-size: 14px;">Search</button>
+            <input type="text" id="search-bar" placeholder="Search for a restaurant" onkeydown="search(this)" style="padding: 10px; width: 300px; font-size: 14px;">
+            <button id="search-button" style="padding: 10px; font-size: 14px;">Search</button>
             <div style="margin-top: 10px;">
-                <label for="radiusInput" style="font-size: 18px;">Radius (miles):</label>
-                <input type="number" id="radiusInput"  style="border-radius: 10px; padding: 10px; font-size: 12px;">
-                <label for="ratingInput" style="font-size: 18px;">Minimum Rating:</label>
-                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="border-radius: 10px; padding: 10px; font-size: 12px;">
-                <button id="filterButton" style="border-radius: 10px; padding: 10px; font-size: 14px;">Filter</button>
+                <label for="radiusInput" style="font-size: 14px;">Radius (miles):</label>
+                <input type="number" id="radiusInput"  style="font-size: 12px;">
+                <label for="ratingInput" style="font-size: 14px;">Minimum Rating:</label>
+                <input type="number" id="ratingInput"  step="0.1" min="0" max="5" style="font-size: 12px;">
+                <button id="filterButton" style="padding: 10px; font-size: 14px;">Filter</button>
             </div>
         </div>
     </div>
@@ -101,6 +90,7 @@
         <div id="sidebar" style="display: none"></div>
         <div id="map"></div>
     </div>
+
     <script>
         let map;
         let service;
@@ -116,211 +106,131 @@
         }
 
         function initMap() {
-            const userLocation = { lat: 33.7490, lng: -84.3880 };
-
-            navigator.geolocation.getCurrentPosition(function(position) {
-                userLocation.lat = position.coords.latitude;
-                userLocation.lng = position.coords.longitude;
-
-                map.setCenter(userLocation);
-                const marker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map
+            function findMyLocation() {
+                return new Promise((resolve, reject) => {
+                    const success = (position) => {
+                        console.log("success");
+                        resolve(position);
+                    }
+                    const error = () => {
+                        alert("Please turn on your location.");
+                        reject();
+                    }
+                    navigator.geolocation.getCurrentPosition(success, error);
                 });
+           }
 
-                markers.push(marker);
-                marker.addListener('click', function() {
-                    getPlaceDetails(place.place_id);
-                });
-            })
+    findMyLocation().then(position => {
+        const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
 
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: userLocation,
+            zoom: 13
+        });
 
+        const marker = new google.maps.Marker({
+            position: userLocation,
+            map: map
+        });
 
-            const defaultBounds = {
-              north: userLocation.lat + 0.1,
-              south: userLocation.lat - 0.1,
-              east: userLocation.lng + 0.1,
-              west: userLocation.lng - 0.1,
-            };
+        markers.push(marker);
+        marker.addListener('click', function() {
+            getPlaceDetails(place.place_id);
+        });
 
-            const input = document.getElementById("search-bar");
+        const defaultBounds = {
+            north: userLocation.lat + 0.1,
+            south: userLocation.lat - 0.1,
+            east: userLocation.lng + 0.1,
+            west: userLocation.lng - 0.1,
+        };
 
-            const options = {
-              bounds: defaultBounds,
-              componentRestrictions: { country: "us" },
-              fields: ["address_components", "geometry", "icon", "name"],
-              strictBounds: false,
-            };
+        const input = document.getElementById("search-bar");
+        const options = {
+            bounds: defaultBounds,
+            componentRestrictions: { country: "us" },
+            fields: ["address_components", "geometry", "icon", "name"],
+            strictBounds: false,
+        };
 
-            const autocomplete = new google.maps.places.Autocomplete(input, options);
+        const autocomplete = new google.maps.places.Autocomplete(input, options);
 
-            autocomplete.setFields(["place_id", "geometry", "name"]);
+        autocomplete.setFields(["place_id", "geometry", "name"]);
 
-           autocomplete.addListener('place_changed', function() {
-                const place = autocomplete.getPlace();
-                if (place && place.place_id) {
-                    getPlaceDetails(place.place_id);
-                }
-            });
-
-
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: userLocation,
-                zoom: 13
-            });
-
-            service = new google.maps.places.PlacesService(map);
-
-            document.getElementById('search-button').addEventListener('click', function() {
-                const query = document.getElementById('search-bar').value;
-                const searchType = document.getElementById('search-type').value;
-                if (searchType === 'name' || searchType === 'cuisine') {
-                    searchPlaces(query); // Call searchPlaces for name or cuisine
-                } else if (searchType === 'address') {
-                    searchPlacesByAddress(query); // Call searchPlacesByAddress for address
-                }
-            });
-
-            document.getElementById('filterButton').addEventListener('click', function() {
-                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
-                const minRating = parseFloat(document.getElementById('ratingInput').value);
-                searchNearby(userLocation, radius, minRating);
-            });
-
-            new ClickEventHandler(map, userLocation);
-
-        }
-
-
-       function isIconMouseEvent(e) {
-          return "placeId" in e;
-        }
-
-        class ClickEventHandler {
-          origin;
-          map;
-          placesService;
-          constructor(map, origin) {
-            this.origin = origin;
-            this.map = map;
-            this.placesService = service;
-            this.map.addListener("click", this.handleClick.bind(this));
-          }
-          handleClick(event) {
-            if (isIconMouseEvent(event)) {
-              console.log("You clicked on place:" + event.placeId);
-              event.stop();
-              if (event.placeId) {
-                this.getPlaceInformation(event.placeId);
-              }
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            if (place && place.place_id) {
+                getPlaceDetails(place.place_id);
             }
-          }
-          getPlaceInformation(placeId) {
-            const me = this;
+        });
 
-            this.placesService.getDetails({ placeId: placeId }, (place, status) => {
-                clearMarkers();
-                addMarker(place);
-                showDetails(place);
-            });
-          }
-        }
+        service = new google.maps.places.PlacesService(map);
 
-function searchPlaces(query) {
-    const request = {
-        query: query,
-        fields: ['name', 'formatted_address', 'geometry', 'place_id'],
-    };
-
-    service.textSearch(request, function(results, status) {
-        console.log('Search Status:', status); // Log the search status
-        console.log('Search Results:', JSON.stringify(results, null, 2)); // Log detailed results
-
-
-        if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
-            clearMarkers();
-            const sidebar = document.getElementById('sidebar');
-            sidebar.innerHTML = ''; // Clear previous results
-
-            results.forEach(function(place) {
-                if (place.geometry && place.geometry.location) {
-                    addMarker(place);
-                    getPlaceDetails(place.place_id, true);
-
-                    // Display the name and address in the sidebar
-                    const placeElement = document.createElement('div');
-                    placeElement.textContent = `${place.name} - ${place.formatted_address}`;
-                    sidebar.appendChild(placeElement);
-                } else {
-                    console.warn('Place does not have geometry:', place);
-                }
-            });
-
-            if (results.geometry && results.geometry.location) {
-                map.setCenter(results.geometry.location);
-                map.setZoom(15);
-            } else {
-                console.warn('No valid location found to center the map.');
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-bar').value;
+            const searchType = document.getElementById('search-type').value;
+            if (searchType === 'name' || searchType === 'cuisine') {
+                searchPlaces(query);
+            } else if (searchType === 'address') {
+                searchPlacesByAddress(query);
             }
-        } else {
-            console.error('Error with place search:', status); // Log error status
-            alert('Place not found: ' + status);
-        }
+        });
+
+        document.getElementById('filterButton').addEventListener('click', function() {
+            const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
+            const minRating = parseFloat(document.getElementById('ratingInput').value);
+            searchNearby(userLocation, radius, minRating);
+        });
+
+        new ClickEventHandler(map, userLocation);
+    }).catch(() => {
+        console.log("Unable to retrieve your location.");
     });
-}
-function searchPlacesByAddress(inputAddress) {
-    const geocoder = new google.maps.Geocoder();
+        }
 
 
-    geocoder.geocode({ address: inputAddress }, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-            const addressLocation = results[0].geometry.location; // Fix: Access the geometry correctly
 
 
+
+
+
+        function searchPlaces(query) {
             const request = {
-                location: addressLocation,
-                radius: 10,
-                type: ['restaurant']
+                query: query,
+                fields: ['name', 'geometry', 'place_id'],
             };
 
-            clearMarkers();
-
-            service.nearbySearch(request, function(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+            service.findPlaceFromQuery(request, function (results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     clearMarkers();
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.innerHTML = ''; // Clear previous results
 
-                    // Add markers for results and display them
-                    results.forEach(function(place) {
-                        if (place.geometry && place.geometry.location) {
-                            addMarker(place);
-                            getPlaceDetails(place.place_id, true);
+                    // Check if we have results
+                    if (results.length > 0) {
+                        results.forEach(function (place) {
+                            if (place.geometry && place.geometry.location) {
+                                addMarker(place);
+                                getPlaceDetails(place.place_id, true);
+                            }
+                        });
 
-                            // Display the name and address in the sidebar
-                            const placeElement = document.createElement('div');
-                            placeElement.textContent = `${place.name} - ${place.formatted_address}`;
-                            document.getElementById('sidebar').appendChild(placeElement);
-                        }
-                    });
-
-                    // Center the map on the first result
-                    if (results[0].geometry && results[0].geometry.location) {
-                        map.setCenter(results[0].geometry.location); // Fix: Use the correct geometry
+                        // Center the map on the first result's location
+                        const firstResultLocation = results[0].geometry.location;
+                        map.setCenter(firstResultLocation);
                         map.setZoom(15);
                     } else {
-                        console.warn('No valid location found to center the map.');
+                        alert('No places found for the given query.');
                     }
                 } else {
-                    console.error('Error with nearby search:', status); // Log error status
-                    alert('No places found: ' + status);
+                    console.error("Error in Places API request:", status);
+                    alert('Place not found. Please try a different query.');
                 }
 
             });
-        } else {
-            console.error('Geocoding failed:', status); // Log error status
-            alert('Geocoding failed: ' + status);
-        }
-    });
-
 }
 
 
@@ -363,7 +273,6 @@ function searchPlacesByAddress(inputAddress) {
             });
         }
 
-
         function getPlaceDetails(placeId, append = false) {
             const request = {
                 placeId: placeId,
@@ -377,6 +286,7 @@ function searchPlacesByAddress(inputAddress) {
                 }
             });
         }
+
 
 
         function nextPhoto() {
@@ -442,12 +352,12 @@ function searchPlacesByAddress(inputAddress) {
             let placeReviews = '';
 
             if (place.reviews && place.reviews.length > 0) {
-                placeReviews += '<h3 style="margin-top: 3vh">Reviews:</styleh3><ul style="align-content: center; align-items: center; align-self: center; justify-content: center; margin: 0; padding: 0;">';
+                placeReviews += '<h3>Reviews:</h3><ul>';
                 place.reviews.forEach(review => {
                     placeReviews += `
-                            <p><strong>${review.author_name}:</strong> <br> ${review.rating} stars</p>
-                            <p style="margin-top: 1vh; align-self: center; justify-self: center; font-size: large" em>${review.relative_time_description}</em></p>
-                            <div style="align-self: center; justify-self: center; font-size: medium; margin-bottom: 6vh">${review.text}</p></div>
+                            <p><strong>${review.author_name}:</strong> ${review.rating} stars</p>
+                            <p><em>${review.relative_time_description}</em></p>
+                            <div><p>${review.text}</p></div>
                     `;
                 });
                 placeReviews += '</ul>';
@@ -466,29 +376,32 @@ function searchPlacesByAddress(inputAddress) {
             if (photos && photos.length > 0) {
                 carousel(photos);
             }
-            const placeDetails = `
+            const placeDetails = document.createElement('div');
+            placeDetails.innerHTML = `
                 <div>
                     {#<img src="${photoUrl}" alt="Image of ${place.name}" style="width:100%; max-width:400px;"/>#}
-                    <h2 style="font-size: x-large">${place.name}</h2>
-                    <p style="font-size: x-large"><strong>Address:</strong> <br> <div style="margin-top: .5vh; font-size: medium">  ${place.formatted_address} </div> </p>
-                    <button style="padding: 10px; border-radius: 15px; font-size: medium" id="save-button" class="save-button">Save</button>
-                    <p><strong>Rating:</strong> <br> <div style="margin-top: .5vh; font-size: large"> ${place.rating} </div> </p>
-                    <p><strong>Business Status:</strong> <br> <div style="margin-top: 1vh; font-size: large"> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"} </div> </p>
-                    <p><strong>Types:</strong> <br> <div style="margin-top: 1vh; font-size: medium"> ${place.types.join(', ')}</p> </div>
-                    <p> <a href="${place.url}" target="_blank"><strong>Visit Place on Maps</strong></a></p>
+                    <h2>${place.name}</h2>
+                    <p><strong>Address:</strong> ${place.formatted_address}</p>
+                    <button id="save-button" class="save-button">Save</button>
+                    <p><strong>Rating:</strong> ${place.rating}</p>
+                    <p><strong>Business Status:</strong> ${place.business_status == "OPERATIONAL" ? "Open" : "Closed"}</p>
+                    <p><strong>Types:</strong> ${place.types.join(', ')}</p>
+                    <p> <a href="${place.website}" target="_blank"><strong>Visit Website</strong></a></p>
 
                     ${placeReviews}
                 </div>
             `;
 
             if (append) {
-                sidebar.innerHTML += placeDetails;
+                sidebar.appendChild(placeDetails);
             } else {
-                sidebar.innerHTML += placeDetails;
+                sidebar.innerHTML = placeDetails;
+               sidebar.innerHTML = '';
+                sidebar.appendChild(placeDetails);
             }
 
           console.log(place);
-          const saveButton = document.getElementById('save-button');
+          const saveButton = placeDetails.querySelector('.save-button');
           saveButton.addEventListener('click', function() {
           savee(place.place_id);  // Ensure placeId is passed correctly
         });
@@ -540,7 +453,7 @@ function clearMarkers() {
 
     </script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU7XSdxIFSnPeeuHtluxdsXvFHf3Ycb1U&libraries=places&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ&libraries=places&callback=initMap"></script>
 </body>
 </html>
 
