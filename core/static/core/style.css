@@ -181,15 +181,19 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     padding-left: 1vh;
     padding-right: 1vh;
     border-radius: 1vh;
-
 }
 
 .helptext {
-    display: None;
+    align-self: center;
+    display: block;
+    align-items: center;
+    color: #3e3d3b;
 }
 
 .register-form ul {
-    display: None;
+    align-self: center;
+    display: block;
+    color: #3e3d3b;
 }
 
 .register-form label {
@@ -197,12 +201,14 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
     margin-bottom: .7vh;
     font-size: large;
     color: #3e3d3b;
+    align-self: center;
+    align-items: center;
 }
 
 .register-form {
     display: block;
     flex-direction: column;
-    margin-right: 3vh;
+    margin-left: 3vh;
 }
 footer {
     background-color: #3e3d3b;
