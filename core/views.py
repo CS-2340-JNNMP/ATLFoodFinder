@@ -58,12 +58,10 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, 'Registration successful!')
-            return redirect('profile')
-
-        else:
-            form=UserCreationFormWrapper()
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'Registration successful!')
+                return redirect('profile')
     else:
         form = UserCreationFormWrapper()
     return render(request, 'core/register_user.html', {'form' : form})

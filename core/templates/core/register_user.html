@@ -15,7 +15,7 @@
         }
 
         #registerBackground {
-            background-image: url("{% static 'core/finalLogin.jpeg' %}");
+            background-image: url("{% static 'core/login8.jpeg' %}");
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -62,25 +62,85 @@
             padding: 20px;
             border-radius: 25px;
             z-index: 2;
-            margin-top: 18vh;
+            margin-top: 15vh;
+            margin-left: 4vh;
         }
         form {
             font-size: small;
         }
     </style>
-
-    {% if form.errors %}
-        <p>There was an error with your form</p>
-    {% endif %}
     <div id="registerBackground">
     <div id="whiteForm">
-<h1 style="margin-bottom: .5vh; margin-right: 3vh; color: #3e3d3b; font-size: xx-large">Welcome!</h1>
-
-<form class="register-form" action="{% url 'register_user' %}" method="POST">
+<h1 style="margin-bottom: .5vh; margin-left: .5vh; color: #3e3d3b; font-size: xx-large">Welcome!</h1>
+    {% if form.errors %}
+        <p style="margin-top: 0px; margin-bottom: 1vh; color:red">There was an error with your form</p>
+    {% endif %}
+    <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input style="margin-top: .9vh; padding-left: 1.5vh; padding-right: 1.5vh; font-size:medium; padding-top: 1vh; padding-bottom: 1vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">
+    <div>
+        <label for="id_username" style="margin-bottom: .7vh;
+        font-size: large;
+        color: #3e3d3b;
+        align-self: center;
+        align-items: center;">Username:</label>
+        <br>
+        <small style="color: #3e3d3b; margin-bottom: .2vh">Username must be unique and under 150 characters made up of only letters, digits, and @/./+/-/_.</small>
+        <br>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="error">
+                {% for error in form.username.errors %}
+                    <p style="color:red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <label style="margin-bottom: .7vh;
+        margin-top: .9vh;
+        font-size: large;
+        color: #3e3d3b;
+        align-self: center;
+        align-items: center;" for="id_password1">Password:</label>
+        <br>
+    <small style="color: #3e3d3b; margin-bottom: .2vh">Password must be at least 8 characters long and cannot be entirely numeric or too common.</small>
+    <br>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="error">
+                {% for error in form.password1.errors %}
+                    <p style="color:red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <label style="margin-bottom: .7vh;
+        margin-top: .8vh;
+        font-size: large;
+        color: #3e3d3b;
+        align-self: center;
+        align-items: center;" for="id_password2">Confirm Password:</label>
+        <br>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="error">
+                {% for error in form.password2.errors %}
+                    <p style="color:red">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <button style="margin-top: .8vh; padding-left: 1.5vh; padding-right: 1.5vh; font-size:medium; padding-top: 1vh; padding-bottom: 1vh; border-radius: 18px;" type="submit">Register</button>
 </form>
+{#<form class="register-form" action="{% url 'register_user' %}" method="POST">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    <input style="margin-top: .9vh; padding-left: 1.5vh; padding-right: 1.5vh; font-size:medium; padding-top: 1vh; padding-bottom: 1vh; border-radius: 18px;" type="submit" value="Submit" class="btn btn-secondary">#}
+{#</form>#}
     </div>
     </div>
 
