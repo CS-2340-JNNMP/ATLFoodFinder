@@ -12,9 +12,12 @@ Uncomment the background-image properties in the class below to add a background
 body {
     flex-direction: column;
     /*background-image: url("https://orders.co/static/99a59eec0735fca313bf2b93349bd5d6/5715c/Italian-Restaurant-Design-Creating-an-Inviting-Ambiance.webp");*/
-    background-image: url('../core/images/NiceRestaruant.jpeg');
+
+    background-image: url('../core/images/NiceRestaurant2.jpeg');
+
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     margin-left: -5px;
     margin-right: -5px;
     margin-top: -1px;
@@ -28,7 +31,7 @@ p {
     color: white;
 }
 
-footer {
+/* footer {
     border-top: black;
     border-top-width: thin;
     border-top-style: solid;
@@ -37,8 +40,8 @@ footer {
     height: 10vh;
     margin-left: -10px;
     width: 101%;
-    margin-bottom: -10px;
-}
+    margin-bottom: -10px; 
+} */
 
 /*
 This is the class that controls the styling of the head navigation bar on all the pages.
@@ -92,7 +95,8 @@ This controls the styling for when a user hovers over the head navigation button
 Should probably rename this. This styles the big words seen on every screen. The first instance of this you see is "Find Food Near You"
 */
 #title {
-    font-size: xx-large;
+    width: 100%;
+    font-size: x-large;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -130,9 +134,8 @@ Using it to align them to the left of the screen.
 Styles the "Get Started" button only found on the front page in the index.html file.
 */
 #map-button {
-    margin-bottom: 50vh;
-    font-size: x-large;
-    padding: 15px;
+    font-size: medium;
+    padding: 10px;
     background-color: white;
     color: black;
     text-decoration: none;
@@ -156,3 +159,87 @@ Styles the "Get Started" button when hovered over by a user only found on the fr
 /*    margin: 0;*/
 /*}*/
 
+/* Sidebar styling */
+.sidebar {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    transition: left 0.3s ease;
+}
+.sidebar.visible {
+    left: 0;  /* Move the sidebar into view */
+}
+
+.form-styles {
+    padding-top: .6vh;
+    padding-bottom: .6vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    border-radius: 1vh;
+
+}
+
+.helptext {
+    display: None;
+}
+
+.register-form ul {
+    display: None;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: .7vh;
+    font-size: large;
+    color: #3e3d3b;
+}
+
+.register-form {
+    display: block;
+    flex-direction: column;
+    margin-right: 3vh;
+}
+footer {
+    background-color: #3e3d3b;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ddd;
+}
+
+.li {
+    margin: 0;
+    padding: 0;
+}

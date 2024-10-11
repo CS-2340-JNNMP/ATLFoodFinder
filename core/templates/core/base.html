@@ -16,8 +16,12 @@
         <nav class="header">
             <a href="/" class="header-button" id="main-button">ATLFoodFinder</a>
             <div id="side-buttons">
-                <a href="/login" class="header-button">Log In</a>
-                <a href="/sign_up" class="header-button">Sign Up</a>
+                {% if user.is_authenticated %}
+                    <a href="/profile/" class="header-button">Profile</a>
+                {% else %}
+                    <a href="/login" class="header-button">Log In</a>
+                {% endif %}
+{#                <a href="/register_user" class="header-button">Sign Up !</a>#}
                 <a href="/contact" class="header-button">Contact</a>
             </div>
         </nav>
@@ -32,10 +36,10 @@
             {% endblock %}
         </div>
 
-        <footer>
-            <div style="justify-content: center; display: flex; flex: 1">
-                <p>Footer</p>
-            </div>
-        </footer>
+{#        <footer>#}
+{#            <div style="justify-content: center; display: flex; flex: 1">#}
+{#                <p>Footer</p>#}
+{#            </div>#}
+{#        </footer>#}
     </body>
 </html>
