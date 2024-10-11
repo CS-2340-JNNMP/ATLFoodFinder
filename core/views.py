@@ -79,7 +79,7 @@ def contact(request):
     return render(request, "core/contact.html")
 
 # Replace with your own API key
-API_KEY = 'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'
+API_KEY = 'AIzaSyBU7XSdxIFSnPeeuHtluxdsXvFHf3Ycb1U'
 
 
 def search_address(request):
@@ -143,14 +143,14 @@ def save_restaurant(request, place_id):
     if request.method == 'POST':
         # Retrieve restaurant details from Google Places API
 
-        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"
+        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={API_KEY}"
         response = requests.get(url)
         details = response.json().get('result', {})
 
         photo_reference = details.get('photos', [{}])[0].get('photo_reference') if details.get('photos') else None
         photo_url = None
         if photo_reference:
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key=AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}"
 
         restaurant, created = Restaurant.objects.get_or_create(
             place_id=details.get('place_id'),

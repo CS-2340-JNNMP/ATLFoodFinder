@@ -114,7 +114,7 @@ MESSAGE_TAGS = {
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-GOOGLE_API_KEY = 'AIzaSyB6pe7uiKQcdWfmgNBd4ufDu2elm-P_YAQ'
+GOOGLE_API_KEY = 'AIzaSyBU7XSdxIFSnPeeuHtluxdsXvFHf3Ycb1U'
 
 LANGUAGE_CODE = 'en-us'
 
