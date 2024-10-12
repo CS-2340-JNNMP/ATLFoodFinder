@@ -101,14 +101,18 @@
         <div id="sidebar" style="display: none"></div>
         <div id="map"></div>
     </div>
+    <script src="https://unpkg.com/geolib"></script>
+
     <script>
+
         let map;
         let service;
         let markers = [];
         let photos = [];
         let currentPhoto;
         let photoIndex = 0;
-
+        let lastSearchResults = [];
+        let currLoc = {}// Store the last search results
         function search(ele) {
             if(event.key === 'Enter') {
                 searchPlaces(document.getElementById('search-bar').value);
@@ -118,10 +122,11 @@
         function initMap() {
             const userLocation = { lat: 33.7490, lng: -84.3880 };
 
+
             navigator.geolocation.getCurrentPosition(function(position) {
                 userLocation.lat = position.coords.latitude;
                 userLocation.lng = position.coords.longitude;
-
+                currLoc = userLocation;
                 map.setCenter(userLocation);
                 const marker = new google.maps.Marker({
                     position: userLocation,
@@ -183,10 +188,11 @@
             });
 
             document.getElementById('filterButton').addEventListener('click', function() {
-                const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34;
-                const minRating = parseFloat(document.getElementById('ratingInput').value);
-                searchNearby(userLocation, radius, minRating);
-            });
+    const radius = parseFloat(document.getElementById('radiusInput').value) * 1609.34; // Convert miles to meters
+    const minRating = parseFloat(document.getElementById('ratingInput').value);
+
+    filterSearchResults(userLocation, radius, minRating);  // Call the new filter function
+});
 
             new ClickEventHandler(map, userLocation);
 
@@ -247,7 +253,7 @@ function searchPlaces(query) {
             clearMarkers();
             const sidebar = document.getElementById('sidebar');
             sidebar.innerHTML = ''; // Clear previous results
-
+            lastSearchResults = results;
             results.forEach(function(place) {
                 if (place.geometry && place.geometry.location) {
                     addMarker(place);
@@ -273,6 +279,53 @@ function searchPlaces(query) {
             alert('Place not found: ' + status);
         }
     });
+}
+function filterSearchResults(userLocation, radius, minRating) {
+            clearMarkers();
+    if (lastSearchResults.length === 0) {
+        alert('No search results to filter!');
+        return;
+    }
+
+    if (lastSearchResults) {
+
+const filteredResults = lastSearchResults.filter(place => {
+        if (place.rating >= minRating && place.rating <= 5) {
+            const placeLocation = {
+                latitude: place.geometry.location.lat(),
+                longitude: place.geometry.location.lng()
+            };
+            const userLoc = {
+                latitude: userLocation.lat,
+                longitude: userLocation.lng
+            };
+            const distance = geolib.getDistance(userLoc, placeLocation);
+
+            console.log(`Place: ${place.name}, Distance: ${distance} meters, Rating: ${place.rating}`);
+            return distance <= radius ; // Convert radius from miles to meters
+        }
+        return false;
+    });
+
+
+                    filteredResults.forEach(function(place) {
+                        if (place.geometry && place.geometry.location) {
+                            addMarker(place);
+                            getPlaceDetails(place.place_id, true);
+
+                        }
+                    });
+                    if (filteredResults.length === 0) {
+                        alert('No restaurants found with the specified criteria.');
+                    }
+                } else {
+                    alert('No restaurants found.');
+                }
+    // Filter the results based on the given radius and minimum rating
+}
+
+function calculateDistance(location1, location2) {
+    return google.maps.geometry.spherical.computeDistanceBetween(location1, location2);
 }
 function searchPlacesByAddress(inputAddress) {
     const geocoder = new google.maps.Geocoder();
