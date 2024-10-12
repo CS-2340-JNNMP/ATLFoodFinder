@@ -113,7 +113,7 @@
                         resolve(position);
                     }
                     const error = () => {
-                        alert("Please turn on your location.");
+                        alert("Please turn on your location");
                         reject();
                     }
                     navigator.geolocation.getCurrentPosition(success, error);
