@@ -100,6 +100,33 @@
             transform: scale(0.98);
         }
 
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .view-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+            outline: none;
+        }
+
+        .view-button:hover {
+            background-color: #45a049;
+        }
+
+        .view-button:active {
+            transform: scale(0.98);
+        }
+
         /* Media Queries for responsiveness */
         @media (max-width: 600px) {
             h1 {
@@ -134,7 +161,11 @@
                     {% endif %}
                     <p><strong>Address:</strong> {{ saved.restaurant.address }}</p>
                     <p><strong>Rating:</strong> {{ saved.restaurant.rating }}</p>
-                    <button class="unsave-button" data-place-id="{{ saved.restaurant.place_id }}">Unsave</button>
+                <br>
+                    <div class="button-container">
+                        <button class="unsave-button" data-place-id="{{ saved.restaurant.place_id }}">Unsave</button>
+                        <button class="view-button" data-place-id="{{ saved.restaurant.place_id }}">View Restaurant</button>
+                    </div>
                 </div>
             </li>
         {% endfor %}
@@ -145,11 +176,19 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const unsaveButtons = document.querySelectorAll('.unsave-button');
+        const viewButtons = document.querySelectorAll('.view-button');
 
         unsaveButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const placeId = this.dataset.placeId;
                 removee(placeId, this);
+            });
+        });
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const placeId = this.dataset.placeId;
+                viewRestaurant(placeId);
             });
         });
     });
@@ -171,6 +210,10 @@
                 alert('Error removing the restaurant.');
             }
         });
+    }
+
+    function viewRestaurant(placeId) {
+        window.location.href = `/map/?place_id=${placeId}`;
     }
 
     function getCookie(name) {

@@ -132,7 +132,8 @@
                 marker.addListener('click', function() {
                     getPlaceDetails(place.place_id);
                 });
-            })
+            }
+            )
 
 
 
@@ -189,6 +190,11 @@
 
             new ClickEventHandler(map, userLocation);
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const placeId = urlParams.get('place_id');
+            if (placeId) {
+                getPlaceDetails(placeId);
+            }
         }
 
 
@@ -435,9 +441,28 @@ function searchPlacesByAddress(inputAddress) {
 
 
 
+        function getPlaceDetails(placeId, append = false) {
+            const request = {
+                placeId: placeId,
+                fields: ['name', 'formatted_address', 'rating', 'business_status', 'types', 'website', 'reviews', 'photos', 'url', 'place_id', 'geometry']
+            };
+            service.getDetails(request, function(place, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    showDetails(place, append);
+                    if (place.geometry && place.geometry.location) {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(15);
+                        addMarker(place);
+                    }
+                } else {
+                    alert('Details not found');
+                }
+            });
+        }
 
         function showDetails(place, append = false) {
             const sidebar = document.getElementById('sidebar');
+            sidebar.style.display = 'block';
 
             let placeReviews = '';
 
@@ -511,7 +536,7 @@ function searchPlacesByAddress(inputAddress) {
         if (response.ok) {
             alert('Restaurant saved successfully!');
         } else {
-            alert('Error saving the restaurant.');
+            alert('Error saving the restaurant. Check if you have logged into your account.');
         }
     });
 }
